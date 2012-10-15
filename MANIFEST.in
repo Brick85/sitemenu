@@ -1,2 +1,2 @@
-recursive-include static *
-recursive-include templates *
+recursive-include sitemenu/static *
+recursive-include sitemenu/templates *
