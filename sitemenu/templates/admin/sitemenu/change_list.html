@@ -1,0 +1,13 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_static admin_list %}
+{% load url from future %}
+{% load admin_urls %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script type="text/javascript" src="{{ STATIC_URL }}admin/sitemenu/js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}admin/sitemenu/js/jquery-ui-1.9.0.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}admin/sitemenu/js/sitemenu.js"></script>
+
+{% endblock %}

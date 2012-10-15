@@ -1,0 +1,88 @@
+from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+from django.template import Context
+from django.template.loader import get_template
+from django.utils.safestring import mark_safe
+
+
+class Menu(MPTTModel):
+    TYPE_TYPES = (
+        ('text', 'Text page'),
+        ('cars', 'Cars page'),
+        ('logn', 'Login page'),
+#        ('redr', 'Redirect page'),
+        ('indx', 'Index page'),
+    )
+
+    page_type               = models.CharField(_('page type'), max_length=4, choices=TYPE_TYPES, default=TYPE_TYPES[0][0])
+
+    url                     = models.SlugField(_('url'))
+    title                   = models.CharField(_('title'), max_length=128)
+    # sub_title               = models.CharField(_('sub title'), max_length=128, blank=True)
+    full_url                = models.CharField(_('full url'), max_length=256, null=True, blank=True, editable=False)
+
+    seo_title               = models.CharField(_('seo title'), max_length=256, null=True, blank=True)
+    seo_keywords            = models.CharField(_('seo keywords'), max_length=256, null=True, blank=True)
+    seo_description         = models.CharField(_('seo description'), max_length=256, null=True, blank=True)
+
+    content_left            = models.TextField(_('content left'), blank=True, null=True)
+    content_right           = models.TextField(_('content right'), blank=True, null=True)
+
+    # redirect_url            = models.CharField(_('redirect url'), max_length=256, null=True, blank=True)
+    # redirect_to_first_child = models.BooleanField(_('redirect ot first child'), default=None)
+    
+    enabled                 = models.BooleanField(_('enabled'), default=None)
+
+    date_added              = models.DateTimeField(_('date added'), auto_now_add=True)
+    date_modified           = models.DateTimeField(_('date_modified'), auto_now=True)
+
+    parent                  = TreeForeignKey('self', null=True, blank=True, related_name='children', verbose_name=_('parent'))
+    order                   = models.SmallIntegerField(_('order'), default=1)
+
+
+
+
+    class Meta:
+        verbose_name = _('menu')
+        verbose_name_plural = _('menus')
+        unique_together = ("url", "parent")
+        ordering = ['tree_id','lft']
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('dispatcher', kwargs={'url':self.full_url})
+
+    def save(self, skip_save_childs=False, *args, **kwargs):
+        super(Menu, self).save(*args, **kwargs)
+        if not skip_save_childs:
+            for m in self.get_descendants(include_self=True):
+                m.create_full_url()
+                m.save(skip_save_childs=True)
+
+
+    def create_full_url(self):
+        if self.level==0:
+            self.full_url = self.url + u'/'
+            if self.pk and (self.pk == 1 or self.pk==2):
+                self.full_url = u''
+            return
+        full_url = self.url + u'/'
+        for ancestor in self.get_ancestors(ascending=True):
+            if(ancestor.level>0):
+                full_url = ancestor.url + u'/' + full_url
+        self.full_url = full_url
+
+    def is_active(self, full_path):
+        return self.full_url in full_path
+
+    def get_breadcrumbs(self):
+        t = get_template('menu/_breadcrumbs.html')
+        c = Context({'items': self.get_ancestors(include_self=True)})
+        return mark_safe(t.render(c))
+
+    def get_enabled_childrens(self):
+        return self.get_children().filter(enabled=1)

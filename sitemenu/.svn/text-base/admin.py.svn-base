@@ -1,0 +1,54 @@
+from django.contrib import admin
+from mptt.admin import MPTTModelAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
+from models import Menu
+from django.db import models
+from tinymce.widgets import AdminTinyMCE
+from django.db import models
+
+from feincms.admin import tree_editor
+
+
+class MenuAdmin(tree_editor.TreeEditor,TranslationAdmin):
+    prepopulated_fields = {"url": ("title",)}
+    list_display = ('title', 'page_type', 'enabled', 'full_url')
+    actions = ['rebuild_tree']
+
+    formfield_overrides = {
+        models.TextField: {'widget': AdminTinyMCE},
+    }
+
+    fieldsets = (
+        (None, {
+            'fields': (('page_type', 'parent'), ('url', 'enabled'),)
+        }),
+        ('Title', {
+            'fields': ('title',)
+        }),
+        ('Seo features', {
+            'classes': ('collapse',),
+            'fields': ('seo_title', 'seo_keywords', 'seo_description')
+        }),
+        # ('Sub title', {
+        #     'fields': ('sub_title',)
+        # }),
+        ('Content', {
+            'fields': ('content_left', 'content_right',)
+        }),
+    )
+
+    class Media:
+        js = (
+            '/static/modeltranslation/js/force_jquery.js',
+            '/static/admin/js/menu.js',
+        )
+        css = {
+            'screen': ('/static/admin/css/menu.css','/static/admin/css/images.css',),
+        }
+
+    def rebuild_tree(self, request, queryset):
+        Menu.tree.rebuild()
+        self.message_user(request, "Successfully rebuilded menu.")
+    rebuild_tree.short_description = "Rebuild menu tree"
+admin.site.register(Menu, MenuAdmin)
+
