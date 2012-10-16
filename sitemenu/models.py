@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils import importlib
-from .sitemenu_settings import PAGES as PAGES_TYPES
+from django.core.urlresolvers import reverse
+from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS
+from . import import_item
 
 
-class Menu(models.Model):
+class SiteMenu(models.Model):
 
     PAGES = PAGES_TYPES
 
@@ -38,7 +39,7 @@ class Menu(models.Model):
     content                 = models.TextField(_('content'), blank=True, null=True)
 
     redirect_url            = models.CharField(_('redirect url'), max_length=256, null=True, blank=True)
-    redirect_to_first_child = models.BooleanField(_('redirect ot first child'), default=None)
+    redirect_to_first_child = models.BooleanField(_('redirect to first child'), default=None)
 
     enabled                 = models.BooleanField(_('enabled'), default=None)
 
@@ -47,6 +48,7 @@ class Menu(models.Model):
         verbose_name_plural = _('menus')
         unique_together = ("url", "parent")
         ordering = ('sortorder',)
+        abstract = True
 
     def __unicode__(self):
         return "%s%s" % ("- " * self.level, self.title)
@@ -56,8 +58,10 @@ class Menu(models.Model):
             parent = self.get_parent()
             self.parents_list = ';'.join([str(v) for v in parent.get_parents_ids_list() + [parent.pk]])
         else:
-            parent = Menu()
-            parent.full_url = '/'
+            class Parent:
+                pass
+            parent = Parent()
+            parent.full_url = ''
             parent.level = -1
             parent.sortorder = ''
             parent.parents_list = ''
@@ -75,7 +79,7 @@ class Menu(models.Model):
             child._get_parent = self
             child.save()
 
-        super(Menu, self).save(*args, **kwargs)
+        super(SiteMenu, self).save(*args, **kwargs)
 
     def get_parent(self):
         try:
@@ -88,11 +92,35 @@ class Menu(models.Model):
         return [int(v) for v in filter(None, self.parents_list.split(';'))]
 
     def get_childs(self):
-        return self._default_manager.filter(parent=self).order_by('sort')
+        try:
+            self._get_childs
+        except:
+            self._get_childs = self._default_manager.filter(parent=self).order_by('sort')
+        return self._get_childs
 
-    @staticmethod
-    def rebuild():
-        for menu in Menu.objects.filter(parent=None):
+    def create_tree(self, queryset):
+        current_path = []
+        top_nodes = []
+        root_level = None
+        for obj in queryset:
+            node_level = obj.level
+            if root_level is None:
+                root_level = node_level
+            if node_level < root_level:
+                raise ValueError(_("cache_tree_children was passed nodes in the wrong order!"))
+            obj._get_childs = []
+
+            while len(current_path) > node_level - root_level:
+                current_path.pop(-1)
+            if node_level == root_level:
+                top_nodes.append(obj)
+            else:
+                current_path[-1]._get_childs.append(obj)
+            current_path.append(obj)
+        return top_nodes
+
+    def rebuild(self):
+        for menu in self._default_manager.filter(parent=None):
             menu.save()
 
     def render(self, request, url_add):
@@ -102,15 +130,25 @@ class Menu(models.Model):
                 use_page = page
         if not use_page:
             raise KeyError("Could not find page type '%s'" % self.page_type)
-        try:
-            render_import = use_page[2].split('.')
-            render_module = importlib.import_module('.'.join(render_import[:-1]))
-            render_function = render_import[-1]
-        except ImportError, e:
-            raise ImportError("Could not import render function '%s' for menu: %s" % (use_page[2], e))
-        try:
-            return getattr(render_module, render_function)(request, self, url_add)
-        except AttributeError, e:
-            raise AttributeError("Could not find render function '%s' in %s" % (render_function, render_module))
 
+        return import_item(use_page[2])(request, self, url_add)
 
+    def get_absolute_url(self):
+        if self.redirect_url:
+            return self.redirect_url
+        if self.redirect_to_first_child:
+            return self._default_manager.filter(parent=self)[0].get_absolute_url()
+        if self.page_type == 'indx':
+            return '/'
+        return reverse('dispatcher', kwargs={'url': self.full_url})
+
+    def is_active(self, full_path):
+        return self.full_url in full_path
+
+    def get_breadcrumbs(self):
+
+        return self._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])
+
+if MENUCLASS == 'sitemenu.models.Menu':
+    class Menu(SiteMenu):
+        pass

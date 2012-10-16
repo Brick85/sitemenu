@@ -1,0 +1,13 @@
+{% load sitemenu %}
+<ul>
+    {% recurse_sitemenu nodes %}
+        <li{% is_activemenu node %}>
+            <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>
+            {% if node.has_childs %}
+                <ul>
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecurse_sitemenu %}
+</ul>
