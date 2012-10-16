@@ -53,31 +53,32 @@ class SiteMenu(models.Model):
     def __unicode__(self):
         return "%s%s" % ("- " * self.level, self.title)
 
-    def save(self, *args, **kwargs):
-        if self.get_parent():
-            parent = self.get_parent()
-            self.parents_list = ';'.join([str(v) for v in parent.get_parents_ids_list() + [parent.pk]])
-        else:
-            class Parent:
-                pass
-            parent = Parent()
-            parent.full_url = ''
-            parent.level = -1
-            parent.sortorder = ''
-            parent.parents_list = ''
-            self.parents_list = ''
+    def save(self, skip_tree_update=False, *args, **kwargs):
+        if not skip_tree_update:
+            if self.get_parent():
+                parent = self.get_parent()
+                self.parents_list = ';'.join([str(v) for v in parent.get_parents_ids_list() + [parent.pk]])
+            else:
+                class Parent:
+                    pass
+                parent = Parent()
+                parent.full_url = ''
+                parent.level = -1
+                parent.sortorder = ''
+                parent.parents_list = ''
+                self.parents_list = ''
 
-        self.full_url = "%s%s/" % (parent.full_url, self.url)
-        self.level = parent.level + 1
+            self.full_url = "%s%s/" % (parent.full_url, self.url)
+            self.level = parent.level + 1
 
-        self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MAX_ITEMS))) % self.sort
+            self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MAX_ITEMS))) % self.sort
 
-        self.has_childs = False
+            self.has_childs = False
 
-        for child in self.get_childs():
-            self.has_childs = True
-            child._get_parent = self
-            child.save()
+            for child in self.get_childs():
+                self.has_childs = True
+                child._get_parent = self
+                child.save()
 
         super(SiteMenu, self).save(*args, **kwargs)
 

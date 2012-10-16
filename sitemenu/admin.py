@@ -25,23 +25,12 @@ class SiteMenuAdmin(admin.ModelAdmin):
                 self.list_display[0] = 'indented_short_title'
         self.list_display_links = ('indented_short_title',)
 
-        if 'actions_column' not in self.list_display:
-            self.list_display.append('actions_column')
-
     def indented_short_title(self, item):
         title = item.title
         span = '<span class="result_list__ident_span"></span>' * item.level
-        return mark_safe('%s%s' % (span, title))
+        return mark_safe('%s%s<div class="drag_handle_container"><div class="drag_handle"></div></div>' % (span, title))
     indented_short_title.short_description = _('title')
     indented_short_title.allow_tags = True
-
-    def _actions_column(self, instance):
-        return ('<div class="drag_handle"></div>',)
-
-    def actions_column(self, instance):
-        return u' '.join(self._actions_column(instance))
-    actions_column.allow_tags = True
-    actions_column.short_description = _('actions')
 
 
 if MENUCLASS == 'sitemenu.models.Menu':

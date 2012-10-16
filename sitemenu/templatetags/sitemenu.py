@@ -2,7 +2,6 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-#from django.template import RequestContext
 from .. import import_item
 from ..sitemenu_settings import MENUCLASS
 Menu = import_item(MENUCLASS)
