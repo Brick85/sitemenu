@@ -13,10 +13,20 @@ Features
 
 Installation
 ------------
-
+- Install django-sitemenu from here or from PyPi: pip install django-sitemenu
 - Add "django.core.context_processors.request" to TEMPLATE_CONTEXT_PROCESSORS
 - Add "sitemenu" to INSTALLED_APPS
-- Run 'manage.py syncdb' to create table (or manage.py migrate if you are using south)
+- Add "url(r'^', include('sitemenu.urls'))" to your urls.py
+- Run 'manage.py syncdb' to create table
+
+You can use this code to add context proccessor:
+
+```python
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "django.core.context_processors.request",
+)
+```
 
 If you need customized fields:
 
