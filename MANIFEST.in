@@ -1,2 +1,3 @@
 recursive-include sitemenu/static *
 recursive-include sitemenu/templates *
+recursive-include sitemenu/locale *

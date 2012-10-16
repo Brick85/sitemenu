@@ -18,13 +18,13 @@ class SiteMenu(models.Model):
     sortorder  = models.CharField(max_length=MAX_LEVELS * len(str(MAX_ITEMS)), editable=False)
     level      = models.PositiveSmallIntegerField(editable=False, default=0)
     has_childs = models.BooleanField(default=False, editable=False)
-    parent     = models.ForeignKey('self', null=True, blank=True)
+    parent     = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
     parents_list = models.CharField(max_length=MAX_LEVELS * 5, editable=False, null=True, blank=True)
 
     # Menu field
     full_url       = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
     date_added     = models.DateTimeField(_('date added'), auto_now_add=True)
-    date_modified  = models.DateTimeField(_('date_modified'), auto_now=True)
+    date_modified  = models.DateTimeField(_('date modified'), auto_now=True)
 
     # Misc fields
     page_type               = models.CharField(_('page type'), max_length=4, choices=TYPE_TYPES, default=TYPE_TYPES[0][0])

@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-16 22:45+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: admin.py:32 models.py:32
+msgid "title"
+msgstr "заголовок"
+
+#: admin_views.py:21
+msgid "Unexpected error."
+msgstr "Неожиданная ошибка."
+
+#: admin_views.py:35
+msgid "Wrong position."
+msgstr "Неправильная позиция."
+
+#: admin_views.py:45
+msgid "Impossible movement."
+msgstr "Невозможное передвижение."
+
+#: admin_views.py:82
+msgid "Item moved."
+msgstr "Объект передвинут."
+
+#: models.py:17
+msgid "sort"
+msgstr "позиция"
+
+#: models.py:21
+msgid "parent"
+msgstr "родитель"
+
+#: models.py:26
+msgid "date added"
+msgstr "дата добавления"
+
+#: models.py:27
+msgid "date modified"
+msgstr "дата изменения"
+
+#: models.py:30
+msgid "page type"
+msgstr "тип страницы"
+
+#: models.py:33
+msgid "url"
+msgstr "ссылка"
+
+#: models.py:35
+msgid "seo title"
+msgstr "seo заголовок"
+
+#: models.py:36
+msgid "seo keywords"
+msgstr "seo ключевые слова"
+
+#: models.py:37
+msgid "seo description"
+msgstr "seo описание"
+
+#: models.py:39
+msgid "content"
+msgstr "текст"
+
+#: models.py:41
+msgid "redirect url"
+msgstr "ссылка перенаправления"
+
+#: models.py:42
+msgid "redirect to first child"
+msgstr "перенаправить на первое подменю"
+
+#: models.py:44
+msgid "enabled"
+msgstr "активно"
+
+#: models.py:47
+msgid "menu"
+msgstr "меню"
+
+#: models.py:48
+msgid "menus"
+msgstr "меню"
+
+#: models.py:111
+msgid "cache_tree_children was passed nodes in the wrong order!"
+msgstr ""
+"функции cache_tree_children объекты были переданы в не правильном порядке"
+
+#: templatetags/sitemenu.py:61
+#, python-format
+msgid "%s tag requires a queryset"
+msgstr "тег %s должен принимать queryset"
