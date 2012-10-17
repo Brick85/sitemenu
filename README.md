@@ -1,12 +1,13 @@
 Django-SiteMenu
 ===============
 
-Nested menu for django projects. Without MPTT and with ajax-sorting.
+Nested menu for django projects. Without MPTT and with drag'n'drop sorting.
+Easy customizable. Looks like simple model for using.
 
 Features
 --------
 - Customazible menu fields
-- Ajax sorting
+- Drag'n'drop sorting
 - Template tags for menu rendering and breadcrumbs
 - One select for menu tree output
 - Additional parameters after urls
@@ -31,6 +32,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 If you need customized fields:
 
 Create new app
+
 Create model in models.py
 
 ```python
@@ -39,6 +41,7 @@ class Menu(SiteMenu):
     # your additional fields
 ```
 In settings.py set SITEMENU_MENUCLASS to 'your_app.models.Menu'
+
 And register it in admin
 
 ```python

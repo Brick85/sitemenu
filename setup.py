@@ -3,8 +3,9 @@ from setuptools import setup
 
 setup(name='django-sitemenu',
       version='0.0.1',
-      description='Nested menu for django projects. Without MPTT and with ajax-sorting.',
-      long_description='',
+      description='Nested menu for django projects.',
+      long_description='Nested menu for django projects. Without MPTT and with drag\'n\'drop sorting.'
+                       'Easy customizable. Looks like simple model for using.',
       author='Vital Belikov',
       author_email='vital@qwe.lv',
       packages=['sitemenu', 'sitemenu.templatetags'],
