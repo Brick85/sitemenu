@@ -34,7 +34,7 @@ def dispatcher(request, url):
                     url_add.append(url_arr[-1])
                     url_arr = url_arr[:-1]
 
-        if menu.page_type == 'indx':
+        if menu and menu.page_type == 'indx':
             return HttpResponsePermanentRedirect(reverse('dispatcher', kwargs={'url': ''}))
 
     if not menu:
@@ -45,7 +45,7 @@ def dispatcher(request, url):
     if menu.redirect_to_first_child:
         return HttpResponseRedirect(menu._default_manager.filter(parent=menu)[0].get_absolute_url())
 
-    return menu.render(request, url_add)
+    return menu.render(request, list(reversed(url_add)))
 
 
 def render_menupage(request, menu, url_add):

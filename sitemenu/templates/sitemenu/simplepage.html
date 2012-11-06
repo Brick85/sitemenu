@@ -1,7 +1,9 @@
+{% extends 'base.html' %}
 {% load sitemenu %}
-{% render_sitemenu %}
 
-{% render_breadcrumbs %}
+{% block page_title %}{% if menu.get_page_title %}{{ menu.get_page_title }} | {% endif %}{{ block.super }}{% endblock page_title %}
 
-<h1>{{ menu.title }}</h1>
-{{ menu.content }}
+{% block content %}
+    <h1>{{ menu.title }}</h1>
+    {{ menu.content }}
+{% endblock content %}

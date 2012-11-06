@@ -1,0 +1,27 @@
+{% load sitemenu %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>{% block page_title %}Sitemenu{% endblock page_title %}</title>
+    <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}sitemenu/css/sitemenu.css" />
+    <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <header>
+        <nav>
+            {% render_sitemenu %}
+        </nav>
+
+        <div id="breadcrumbs">
+            {% render_breadcrumbs %}
+        </div>
+    </header>
+    <section>
+        {% block content %}{% endblock content %}
+    </section>
+</body>
+</html>

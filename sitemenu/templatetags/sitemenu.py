@@ -9,8 +9,13 @@ Menu = import_item(MENUCLASS)
 register = template.Library()
 
 
-def render_sitemenu(context, name=None, template='_menu'):
-    nodes = Menu.objects.filter(enabled=True)
+def render_sitemenu(context, template='_menu', catalogue_root=None):
+    if not catalogue_root:
+        nodes = Menu.objects.filter(enabled=True)
+    else:
+        nodes = Menu.objects.filter(enabled=True, full_url__startswith=catalogue_root.full_url).exclude(pk=catalogue_root.pk)
+        if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
+            nodes = nodes.filter(catalogue_root.q_filters)
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
 register.simple_tag(takes_context=True)(render_sitemenu)
 
@@ -84,7 +89,10 @@ def recurse_sitemenu(parser, token):
 
         def render(self, context):
             queryset = context[self.queryset_var]
-            roots = queryset[0].create_tree(queryset)
+            try:
+                roots = queryset[0].create_tree(queryset)
+            except IndexError:
+                return ''
             bits = [self._render_node(context, node) for node in roots]
             return ''.join(bits)
 

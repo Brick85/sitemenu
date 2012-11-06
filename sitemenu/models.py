@@ -144,11 +144,20 @@ class SiteMenu(models.Model):
         return reverse('dispatcher', kwargs={'url': self.full_url})
 
     def is_active(self, full_path):
+        if full_path == '/' and self.page_type == 'indx':
+            return True
         return self.full_url in full_path
 
     def get_breadcrumbs(self):
-
         return self._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])
+
+    def get_page_title(self):
+        if self.page_type == 'indx':
+            return None
+        try:
+            return self._page_title
+        except:
+            return self.title
 
 if MENUCLASS == 'sitemenu.models.Menu':
     class Menu(SiteMenu):
