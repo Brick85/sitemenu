@@ -9,25 +9,28 @@ Menu = import_item(MENUCLASS)
 register = template.Library()
 
 
-def render_sitemenu(context, template='_menu', catalogue_root=None):
+@register.simple_tag(takes_context=True)
+def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None):
     if not catalogue_root:
         nodes = Menu.objects.filter(enabled=True)
+        if flat!=None:
+            nodes = nodes.filter(level=0)
     else:
         nodes = Menu.objects.filter(enabled=True, full_url__startswith=catalogue_root.full_url).exclude(pk=catalogue_root.pk)
         if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
             nodes = nodes.filter(catalogue_root.q_filters)
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
-register.simple_tag(takes_context=True)(render_sitemenu)
 
 
+@register.simple_tag(takes_context=True)
 def is_activemenu(context, menu, active_text=' class="active"'):
     if menu.is_active(context['request'].get_full_path()):
         return active_text
     else:
         return ''
-register.simple_tag(takes_context=True)(is_activemenu)
 
 
+@register.simple_tag(takes_context=True)
 def render_breadcrumbs(context, template='_breadcrumbs'):
     try:
         menu = context['menu']
@@ -35,7 +38,6 @@ def render_breadcrumbs(context, template='_breadcrumbs'):
         return ''
     breadcrumbs = menu.get_breadcrumbs()
     return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs}, context_instance=context)
-register.simple_tag(takes_context=True)(render_breadcrumbs)
 
 
 @register.tag
