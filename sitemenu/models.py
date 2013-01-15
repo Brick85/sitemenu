@@ -133,7 +133,10 @@ class SiteMenu(models.Model):
             if page[0] == self.page_type:
                 use_page = page
         if not use_page:
-            raise KeyError("Could not find page type '%s'" % self.page_type)
+            aviable_pages = []
+            for page in self.PAGES:
+                aviable_pages.append(page[0])
+            raise KeyError("Could not find page type '%s' in '%s'" % (self.page_type, ', '.join(aviable_pages)))
 
         return import_item(use_page[2])(request, self, url_add)
 
