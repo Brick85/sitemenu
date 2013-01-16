@@ -6,4 +6,12 @@ PAGES = getattr(settings, 'SITEMENU_PAGES', (
     ('indx', 'Index page', 'sitemenu.views.render_menupage'),
 ))
 
+if 'qshop' in settings.INSTALLED_APPS:
+    from qshop import qshop_settings
+    PAGES += (
+        ('', '---------', ''),
+    )
+
+    PAGES += qshop_settings.PAGES
+
 MENUCLASS = getattr(settings, 'SITEMENU_MENUCLASS', 'sitemenu.models.Menu')
