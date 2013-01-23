@@ -20,7 +20,7 @@ def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, e
         if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
             nodes = nodes.filter(catalogue_root.q_filters)
         if flat != None:
-            nodes = nodes.filter(level=catalogue_root + 1)
+            nodes = nodes.filter(level=catalogue_root.level + 1)
     if exclude_index != None:
         nodes = nodes.exclude(page_type='indx')
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
