@@ -8,21 +8,24 @@ Menu = import_item(MENUCLASS)
 
 register = template.Library()
 
+from django.core.cache import cache
+
 
 @register.simple_tag(takes_context=True)
-def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None):
-    if not catalogue_root:
-        nodes = Menu.objects.filter(enabled=True)
-        if flat != None:
-            nodes = nodes.filter(level=0)
-    else:
-        nodes = Menu.objects.filter(enabled=True, full_url__startswith=catalogue_root.full_url).exclude(pk=catalogue_root.pk)
-        if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
-            nodes = nodes.filter(catalogue_root.q_filters)
-        if flat != None:
-            nodes = nodes.filter(level=catalogue_root.level + 1)
-    if exclude_index != None:
-        nodes = nodes.exclude(page_type='indx')
+def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None):
+    if not nodes:
+        if not catalogue_root:
+            nodes = Menu.objects.filter(enabled=True)
+            if flat != None:
+                nodes = nodes.filter(level=0)
+        else:
+            nodes = Menu.objects.filter(enabled=True, full_url__startswith=catalogue_root.full_url).exclude(pk=catalogue_root.pk)
+            if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
+                nodes = nodes.filter(catalogue_root.q_filters)
+            if flat != None:
+                nodes = nodes.filter(level=catalogue_root.level + 1)
+        if exclude_index != None:
+            nodes = nodes.exclude(page_type='indx')
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
 
 

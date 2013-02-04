@@ -7,7 +7,10 @@ from . import import_item
 
 Menu = import_item(MENUCLASS)
 
+#from sitemenu.decorators import profile
 
+
+#@profile('dispatcher.prof')
 def dispatcher(request, url):
     url_add = []
     if url == '':
