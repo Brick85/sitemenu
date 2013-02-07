@@ -6,6 +6,7 @@ from . import import_item
 
 
 class SiteMenu(models.Model):
+    _translation_fields = ['title', 'seo_title', 'seo_keywords', 'seo_description', 'content']
 
     PAGES = PAGES_TYPES
 
@@ -32,13 +33,13 @@ class SiteMenu(models.Model):
     title                   = models.CharField(_('title'), max_length=256)
     url                     = models.SlugField(_('url'), max_length=32)
 
-    seo_title               = models.CharField(_('seo title'), max_length=256, null=True, blank=True)
-    seo_keywords            = models.CharField(_('seo keywords'), max_length=256, null=True, blank=True)
-    seo_description         = models.CharField(_('seo description'), max_length=256, null=True, blank=True)
+    seo_title               = models.CharField(_('seo title'), max_length=256, blank=True)
+    seo_keywords            = models.CharField(_('seo keywords'), max_length=256, blank=True)
+    seo_description         = models.CharField(_('seo description'), max_length=256, blank=True)
 
-    content                 = models.TextField(_('content'), blank=True, null=True)
+    content                 = models.TextField(_('content'), blank=True)
 
-    redirect_url            = models.CharField(_('redirect url'), max_length=256, null=True, blank=True)
+    redirect_url            = models.CharField(_('redirect url'), max_length=256, blank=True)
     redirect_to_first_child = models.BooleanField(_('redirect to first child'), default=None)
 
     enabled                 = models.BooleanField(_('enabled'), default=None)
