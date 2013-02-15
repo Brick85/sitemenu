@@ -1,5 +1,5 @@
 {% load sitemenu %}
-<ul>
+<ul class="nav">
     {% recurse_sitemenu nodes %}
         <li{% is_activemenu node %}>
             <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>

@@ -5,5 +5,5 @@
 
 {% block content %}
     <h1>{{ menu.title }}</h1>
-    {{ menu.content }}
+    {{ menu.content|safe }}
 {% endblock content %}
