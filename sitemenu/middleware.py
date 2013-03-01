@@ -13,13 +13,11 @@ class ServerCacheMiddleware(object):
         if response.status_code != 200:
             return False
 
-        if not SERVER_CACHE_DIR or not hasattr(request, '_server_cache'):
-            return False
-
         return True
 
     def process_response(self, request, response):
-        if not self._should_update_cache(request, response):
+
+        if not SERVER_CACHE_DIR or not hasattr(request, '_server_cache'):
             return response
 
         if 'argsfunc' in request._server_cache and request._server_cache['argsfunc']:
@@ -39,6 +37,9 @@ class ServerCacheMiddleware(object):
                 response.set_cookie('scas', strargs, 60 * 60 * 24 * 360)
             else:
                 response.delete_cookie('scas')
+            return response
+
+        if not self._should_update_cache(request, response):
             return response
 
         filename = "cache{0}.html".format(strargs)
