@@ -8,9 +8,11 @@ from . import import_item
 Menu = import_item(MENUCLASS)
 
 #from sitemenu.decorators import profile
+from sitemenu.decorators import servercache
 
 
 #@profile('dispatcher.prof')
+@servercache()
 def dispatcher(request, url):
     url_add = []
     if url == '':
