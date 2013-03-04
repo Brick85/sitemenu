@@ -10,6 +10,9 @@ class ServerCacheMiddleware(object):
         if request.method != 'GET':
             return False
 
+        if len(request.GET) > 0:
+            return False
+
         if response.status_code != 200:
             return False
 
