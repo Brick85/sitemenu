@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-16 22:45+0300\n"
+"POT-Creation-Date: 2013-03-06 14:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: admin.py:32 models.py:32
+#: admin.py:49 models.py:33
 msgid "title"
 msgstr "заголовок"
 
@@ -39,72 +39,79 @@ msgstr "Невозможное передвижение."
 msgid "Item moved."
 msgstr "Объект передвинут."
 
-#: models.py:17
+#: models.py:18
 msgid "sort"
 msgstr "позиция"
 
-#: models.py:21
+#: models.py:22
 msgid "parent"
 msgstr "родитель"
 
-#: models.py:26
+#: models.py:27
 msgid "date added"
 msgstr "дата добавления"
 
-#: models.py:27
+#: models.py:28
 msgid "date modified"
 msgstr "дата изменения"
 
-#: models.py:30
+#: models.py:31
 msgid "page type"
 msgstr "тип страницы"
 
-#: models.py:33
+#: models.py:34
 msgid "url"
 msgstr "ссылка"
 
-#: models.py:35
-msgid "seo title"
-msgstr "seo заголовок"
-
 #: models.py:36
+msgid "h1 title"
+msgstr "h1 заголовок"
+
+#: models.py:37
+msgid "page title"
+msgstr "заголовок страницы"
+
+#: models.py:38
 msgid "seo keywords"
 msgstr "seo ключевые слова"
 
-#: models.py:37
+#: models.py:39
 msgid "seo description"
 msgstr "seo описание"
 
-#: models.py:39
+#: models.py:41
 msgid "content"
 msgstr "текст"
 
-#: models.py:41
+#: models.py:43
 msgid "redirect url"
 msgstr "ссылка перенаправления"
 
-#: models.py:42
+#: models.py:44
 msgid "redirect to first child"
 msgstr "перенаправить на первое подменю"
 
-#: models.py:44
+#: models.py:46
 msgid "enabled"
 msgstr "активно"
 
-#: models.py:47
+#: models.py:49
 msgid "menu"
 msgstr "меню"
 
-#: models.py:48
+#: models.py:50
 msgid "menus"
 msgstr "меню"
 
-#: models.py:111
+#: models.py:116
 msgid "cache_tree_children was passed nodes in the wrong order!"
 msgstr ""
 "функции cache_tree_children объекты были переданы в не правильном порядке"
 
-#: templatetags/sitemenu.py:61
+#: templatetags/sitemenu.py:75
 #, python-format
 msgid "%s tag requires a queryset"
 msgstr "тег %s должен принимать queryset"
+
+#~ msgid "seo title"
+#~ msgstr "seo заголовок"

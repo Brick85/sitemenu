@@ -6,7 +6,7 @@ from . import import_item
 
 
 class SiteMenu(models.Model):
-    _translation_fields = ['title', 'seo_title', 'seo_keywords', 'seo_description', 'content']
+    _translation_fields = ['title', 'h1_title', 'page_title', 'seo_keywords', 'seo_description', 'content']
 
     PAGES = PAGES_TYPES
 
@@ -15,7 +15,7 @@ class SiteMenu(models.Model):
     TYPE_TYPES = [(x[0], x[1]) for x in PAGES]
 
     # Tree fields
-    sort       = models.IntegerField(_('sort'), default=0)
+    sort       = models.IntegerField(_('sort'), default=0, editable=False)
     sortorder  = models.CharField(max_length=MAX_LEVELS * len(str(MAX_ITEMS)), editable=False)
     level      = models.PositiveSmallIntegerField(editable=False, default=0)
     has_childs = models.BooleanField(default=False, editable=False)
@@ -33,7 +33,8 @@ class SiteMenu(models.Model):
     title                   = models.CharField(_('title'), max_length=256)
     url                     = models.SlugField(_('url'), max_length=32)
 
-    seo_title               = models.CharField(_('seo title'), max_length=256, blank=True)
+    h1_title                = models.CharField(_('h1 title'), max_length=256, blank=True)
+    page_title              = models.CharField(_('page title'), max_length=256, blank=True)
     seo_keywords            = models.CharField(_('seo keywords'), max_length=256, blank=True)
     seo_description         = models.CharField(_('seo description'), max_length=256, blank=True)
 
@@ -74,6 +75,16 @@ class SiteMenu(models.Model):
 
             self.full_url = "%s%s/" % (parent.full_url, self.url)
             self.level = parent.level + 1
+
+            if not self.pk:
+                try:
+                    siblings = parent.get_childs()
+                except AttributeError:
+                    siblings = self._default_manager.filter(parent=None)
+                try:
+                    self.sort = siblings.aggregate(models.Max('sort'))['sort__max'] + 1
+                except TypeError:
+                    self.sort = 0
 
             self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MAX_ITEMS))) % self.sort
 
@@ -161,10 +172,18 @@ class SiteMenu(models.Model):
     def get_page_title(self):
         if self.page_type == 'indx':
             return None
-        try:
+        if hasattr(self, '_page_title'):
             return self._page_title
-        except:
-            return self.title
+        if hasattr(self, 'page_title') and self.page_title:
+            return self.page_title
+        return self.title
+
+    def get_h1_title(self):
+        if hasattr(self, '_h1_title'):
+            return self._h1_title
+        if hasattr(self, 'h1_title') and self.h1_title:
+            return self.h1_title
+        return self.title
 
 if MENUCLASS == 'sitemenu.models.Menu':
     class Menu(SiteMenu):

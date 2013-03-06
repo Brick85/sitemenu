@@ -47,6 +47,18 @@ def render_breadcrumbs(context, template='_breadcrumbs'):
     return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs}, context_instance=context)
 
 
+@register.simple_tag(takes_context=True)
+def render_seometa(context, custom_menu=False):
+    if not custom_menu:
+        try:
+            menu = context['menu']
+        except KeyError:
+            return ''
+    else:
+        menu = custom_menu
+    return render_to_string('sitemenu/_seometa.html', {'menu': menu}, context_instance=context)
+
+
 @register.tag
 def recurse_sitemenu(parser, token):
     """

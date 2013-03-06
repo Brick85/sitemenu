@@ -25,6 +25,8 @@ class SiteMenuAdmin(ParentModel):
     list_display = ('title', 'enabled')
     formfield_overrides = sitemenu_formfield_overrides
 
+    change_list_template = 'admin/sitemenu/change_list.html'
+
     class Media:
         css = {
             'screen': ('/static/admin/sitemenu/css/no-theme/jquery-ui-1.9.0.custom.min.css', '/static/admin/sitemenu/css/sitemenu.css',),

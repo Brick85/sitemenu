@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-16 22:45+0300\n"
+"POT-Creation-Date: 2013-03-06 14:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2)\n"
 
-#: admin.py:32 models.py:32
+#: admin.py:49 models.py:33
 msgid "title"
 msgstr ""
 
@@ -39,71 +39,75 @@ msgstr ""
 msgid "Item moved."
 msgstr ""
 
-#: models.py:17
+#: models.py:18
 msgid "sort"
 msgstr ""
 
-#: models.py:21
+#: models.py:22
 msgid "parent"
 msgstr ""
 
-#: models.py:26
+#: models.py:27
 msgid "date added"
 msgstr ""
 
-#: models.py:27
+#: models.py:28
 msgid "date modified"
 msgstr ""
 
-#: models.py:30
+#: models.py:31
 msgid "page type"
 msgstr ""
 
-#: models.py:33
+#: models.py:34
 msgid "url"
 msgstr ""
 
-#: models.py:35
-msgid "seo title"
-msgstr ""
-
 #: models.py:36
-msgid "seo keywords"
+msgid "h1 title"
 msgstr ""
 
 #: models.py:37
-msgid "seo description"
+msgid "page title"
+msgstr ""
+
+#: models.py:38
+msgid "seo keywords"
 msgstr ""
 
 #: models.py:39
-msgid "content"
+msgid "seo description"
 msgstr ""
 
 #: models.py:41
+msgid "content"
+msgstr ""
+
+#: models.py:43
 msgid "redirect url"
 msgstr ""
 
-#: models.py:42
+#: models.py:44
 msgid "redirect to first child"
 msgstr ""
 
-#: models.py:44
+#: models.py:46
 msgid "enabled"
 msgstr ""
 
-#: models.py:47
+#: models.py:49
 msgid "menu"
 msgstr ""
 
-#: models.py:48
+#: models.py:50
 msgid "menus"
 msgstr ""
 
-#: models.py:111
+#: models.py:116
 msgid "cache_tree_children was passed nodes in the wrong order!"
 msgstr ""
 
-#: templatetags/sitemenu.py:61
+#: templatetags/sitemenu.py:75
 #, python-format
 msgid "%s tag requires a queryset"
 msgstr ""
