@@ -70,3 +70,68 @@ Define in settings.py SITEMENU_PAGES with tupe:
   - request is request
   - menu is instance of current class
   - url_add is list of additional urls passed to your view. If you have url like /my/view/ and user accessing /my/view/add1/add2/ and /my/view/ doesn't have child with url add1, then ['add1', 'add2'] will be passed to your view as url_add
+
+Server Cache
+------------
+
+create servercache.py:
+
+```python
+from qshop.cart import Cart
+
+def get_servercache_str(request, response):
+    argsstr = ''
+
+    cart = Cart(request)
+    products_in_cart = cart.total_products_with_qty()
+    if products_in_cart > 0:
+        argsstr += 'p{0}'.format(products_in_cart)
+
+    return argsstr
+```
+
+add as first middleware:
+
+```python
+    'sitemenu.middleware.ServerCacheMiddleware',
+```
+
+add to settings.py
+
+```python
+SITEMENU_SERVER_CACHE_DIR = rel('_server_cache')
+SITEMENU_SERVER_CACHE_ARGS_FUNC = 'path_to.servercache.get_servercache_str'
+```
+
+add to any models.py
+
+```python
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from sitemenu import sitemenu_settings
+
+from django.contrib.sessions.models import Session
+from qshop.cart.models import Cart, Item
+import shutil
+
+if sitemenu_settings.SERVER_CACHE_DIR:
+    skip_save_classes = (Session, Cart, Item)
+
+    @receiver(post_save)
+    def clear_cache_after_save(sender, **kwargs):
+        if not isinstance(kwargs['instance'], skip_save_classes):
+            shutil.rmtree(sitemenu_settings.SERVER_CACHE_DIR, True)
+```
+
+add to nginx vhost
+
+```
+    location / {
+        root /path_to/_server_cache;
+        try_files "${uri}cache${cookie_scas}${args}.html" @django;
+    }
+
+    location @django {
+        ...
+    }
+```
