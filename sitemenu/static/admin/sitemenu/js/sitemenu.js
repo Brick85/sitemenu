@@ -1,102 +1,97 @@
 $(function() {
-    var drag_element = {};
-    var level_size = 25;
-    var fixed_margin = 25;
-    var div_top = 2;
 
-    var position_element = $('<div id="position_place"><div id="position_place_inner"></div></div>');
+    var level_size = 25;
+    var offset_margin = 7;
+
+    $('#result_list tbody tr').each(function(){
+        $('<div class="catcher_container"><span class="catcher catcher_before"><span></span></span><span class="catcher catcher_after"><span></span></span></div>').prependTo($('td', this)[0]);
+    });
 
     var loader = $('<div id="loader"><div></div></div>');
     $('body').append(loader);
 
-    var save_position = {};
-    var save_on_drop = false;
+    var save_position = {
+        level: 0,
+        target_id: 0,
+        top_half: 0,
+        element_id: 0
+    };
 
-    $("#result_list tbody tr").draggable({
+    var target_level = 0;
+    var target_element = null;
+    var element = null;
+
+    $(".drag_handle").draggable({
         helper: function(){
             return $('<div></div>');
         },
-        handle: '.drag_handle',
         start: function(event, ui) {
-            drag_element = this;
+            $(this).closest('tbody').addClass('drag_started');
+            element = $(this).closest('tr');
+            save_position.element_id = get_id(element);
+            element.addClass('dragging_element');
         },
-        stop: function(event, ui) {
-            if(!save_on_drop)
-                return;
-            loader.show();
-            $.ajax({
-                type: "POST",
-                url: save_url,
-                data: save_position
-            }).done(function( data ) {
-                location.reload();
-            });
+        drag: function(event, ui) {
+            set_level(ui.position.left);
         },
-        drag: function(event, ui){
-            save_on_drop = false;
+        stop: function(event, ui){
+            $(this).closest('tbody').removeClass('drag_started');
+            element.removeClass('dragging_element');
+            element.css('opacity', '1.0');
+        }
+    });
 
-            target_element = $(event.toElement).closest('tr.ui-draggable');
-            drop_element = $(event.target).closest('tr.ui-draggable');
-
-            drop_element.css('opacity', '1.0');
-
-            target_id = get_id(target_element);
-            if(typeof(target_id) == 'undefined'){
-                position_element.hide();
-                return;
+    $( ".catcher" ).droppable({
+        hoverClass: "ui-state-active",
+        drop: function( event, ui ) {
+            if(save_position.target_id != save_position.element_id){
+                console.log(save_position);
+                save();
             }
-            drop_id = get_id(drop_element);
-            if(target_id == drop_id){
-                position_element.hide();
-                return;
+        },
+        over: function( event, ui ) {
+
+            var top_half = false;
+            if($(this).hasClass('catcher_before')){
+                top_half = true;
             }
-            drop_element.css('opacity', '0.5');
-
-            target_offset = target_element.offset();
-
-            offsetX = event.pageX - parseInt(target_offset.left);
-            offsetY = event.pageY - parseInt(target_offset.top);
-
-            top_half = (drop_element.height()/2)>=offsetY;
-
-            on_placeholder = $(event.toElement).attr('id') == 'position_place_inner';
-
-            if(!on_placeholder){
-                if(top_half){
-                    $('div', position_element).css('top', (div_top-drop_element.height()) + 'px');
-                } else {
-                    $('div', position_element).css('top', div_top + 'px');
-                }
-            }
-
-            position_element.show();
-
+            target_element = $(this).closest('tr');
             target_level = $('.result_list__ident_span', target_element).length;
 
-            move = Math.floor(ui.offset.left/level_size);
-            if(top_half) // && get_id(target_element) == get_id($('#result_list tbody tr.ui-draggable:first-child')))
-                move = 0;
+            save_position.target_id = get_id(target_element);
+            save_position.top_half = top_half?1:0;
 
-            end_level = target_level + move;
-            if(end_level<target_level) end_level = target_level;
-            if(end_level>target_level+1) end_level = target_level+1;
+            set_level(0);
 
-            $(position_element).css('margin-left', (fixed_margin+level_size*end_level)+'px');
-
-            $('td:first-child', target_element).append(position_element);
-
-            save_position = {
-                level: end_level,
-                target_id: target_id,
-                top_half: top_half?1:0,
-                element_id: drop_id
+            if(save_position.target_id != save_position.element_id){
+                element.css('opacity', '0.5');
+            } else {
+                element.css('opacity', '1.0');
             }
-            save_on_drop = true;
-
         }
     });
 
     function get_id(el){
-        return $('td.action-checkbox input', el).val()
+        return parseInt($('td.action-checkbox input', el).val(), 10);
+    }
+
+    function set_level(offset_left){
+        level_add = 0;
+        if(offset_left > 35 && save_position.top_half === 0) level_add++;
+        save_position.level = target_level + level_add;
+
+        catcher_span_left = save_position.level * level_size - offset_margin;
+        $('#result_list tbody tr td .catcher span').css('left', catcher_span_left + 'px');
+    }
+
+    function save(){
+        loader.show();
+        $.ajax({
+            type: "POST",
+            url: save_url,
+            data: save_position
+        }).done(function( data ) {
+            location.reload();
+        });
     }
 });

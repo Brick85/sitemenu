@@ -7,6 +7,7 @@
 .drag_handle_container {
     display: inline-block;
     position: absolute;
+    z-index: 99;
 }
 .drag_handle {
     width: 16px;
@@ -22,18 +23,6 @@
     opacity: 1.0;
 }
 
-#position_place {
-    position: absolute;
-}
-#position_place div {
-    height: 6px;
-    width: 500px;
-    background-color: #6CA8F5;
-    position: absolute;
-    top: 2px;
-    z-index: 99;
-}
-
 #loader {
     display: none;
     position: absolute;
@@ -43,4 +32,55 @@
     bottom: 0px;
     background-color: black;
     opacity: 0.1;
+    z-index: 999;
+}
+
+
+#result_list tbody tr td .catcher_container {
+    position: absolute;
+    display: none;
+}
+#result_list .drag_started tr td .catcher_container {
+    display: block;
+}
+#result_list tbody tr td .catcher {
+    position: absolute;
+    display: block;
+    width: 500px;
+    height: 13px;
+    left: 30px;
+    z-index: 100;
+}
+#result_list tbody tr td .catcher_before {
+    top: -7px;
+    /*background-color: red;*/
+    height: 14px;
+}
+#result_list tbody tr td .catcher_after {
+    top: 7px;
+    /*background-color: orange;*/
+}
+
+#result_list tbody tr td .catcher span {
+    width: 500px;
+    height: 6px;
+    left: 200px;
+    background-color: #6CA8F5;
+    position: absolute;
+    display: none;
+}
+#result_list tbody tr td .catcher_before span {
+    top: -2px;
+}
+#result_list tbody tr td .catcher_after span {
+    bottom: -3px;
+}
+
+#result_list tbody tr td .ui-state-active span {
+    display: block;
+}
+
+
+#result_list tbody .dragging_element td .ui-state-active span {
+    display: none;
 }
