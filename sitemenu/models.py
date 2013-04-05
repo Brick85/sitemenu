@@ -95,6 +95,9 @@ class SiteMenu(models.Model):
                 child._get_parent = self
                 child.save()
 
+            if not self.has_childs:
+                self.redirect_to_first_child = False
+
         super(SiteMenu, self).save(*args, **kwargs)
 
     def get_parent(self):
