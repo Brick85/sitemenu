@@ -161,7 +161,7 @@ class SiteMenu(models.Model):
         if self.redirect_to_first_child:
             return self._default_manager.filter(parent=self)[0].get_absolute_url()
         if self.page_type == 'indx':
-            return '/'
+            return reverse('dispatcher', kwargs={'url': ''})
         return reverse('dispatcher', kwargs={'url': self.full_url})
 
     def is_active(self, full_path):
