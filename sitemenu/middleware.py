@@ -2,7 +2,36 @@
 from sitemenu.sitemenu_settings import SERVER_CACHE_DIR, SERVER_CACHE_ARGS_FUNC
 from sitemenu import import_item
 import os
-import hashlib
+#import hashlib
+
+from django.conf import settings
+from django.utils import translation
+from django.core.urlresolvers import reverse
+
+
+class ForceAdminLanguageMiddleware:
+    """
+    Force admin to use selected language.
+    Add after
+    'django.middleware.locale.LocaleMiddleware',
+    """
+    def process_request(self, request):
+        if request.path.startswith(reverse('admin:index')):
+            request.LANGUAGE_CODE = getattr(settings, 'ADMIN_LANGUAGE_CODE', settings.LANGUAGE_CODE)
+            translation.activate(request.LANGUAGE_CODE)
+            request.LANG = request.LANGUAGE_CODE
+
+
+class ForceDefaultLanguageMiddleware(object):
+    """
+    Force default site language.
+    Add before
+    'django.middleware.locale.LocaleMiddleware',
+    """
+    def process_request(self, request):
+        if 'HTTP_ACCEPT_LANGUAGE' in request.META:
+            del request.META['HTTP_ACCEPT_LANGUAGE']
+
 
 class ServerCacheMiddleware(object):
 
