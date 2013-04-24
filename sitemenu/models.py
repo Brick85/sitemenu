@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS
+from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER
 from . import import_item
 
 
@@ -44,6 +44,10 @@ class SiteMenu(models.Model):
     redirect_to_first_child = models.BooleanField(_('redirect to first child'), default=None)
 
     enabled                 = models.BooleanField(_('enabled'), default=None)
+
+    if SPLIT_TO_HEADER_AND_FOOTER:
+        in_top_menu = models.BooleanField(_('show in top menu'), default=False)
+        in_bottom_menu = models.BooleanField(_('show in bottom menu'), default=False)
 
     class Meta:
         verbose_name = _('menu')

@@ -3,12 +3,35 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from .. import import_item
-from ..sitemenu_settings import MENUCLASS
+from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
 
-from django.core.cache import cache
+#from django.core.cache import cache
+
+
+if SPLIT_TO_HEADER_AND_FOOTER:
+    @register.simple_tag(takes_context=True)
+    def render_sitemenu_header(context):
+        nodes = Menu.objects.filter(in_top_menu=True)
+        return render_sitemenu(context, nodes=nodes)
+
+    @register.simple_tag(takes_context=True)
+    def render_sitemenu_footer(context):
+        nodes = Menu.objects.filter(in_bottom_menu=True)
+        return render_sitemenu(context, nodes=nodes)
+
+
+@register.simple_tag(takes_context=True)
+def set_root_menu(context, var="root_menu"):
+    try:
+        menu_id = context['menu'].get_parents_ids_list()[0]
+        root_menu = Menu.objects.get(pk=menu_id)
+    except IndexError:
+        root_menu = context['menu']
+    context[var] = root_menu
+    return ''
 
 
 @register.simple_tag(takes_context=True)
@@ -16,15 +39,15 @@ def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, e
     if not nodes:
         if not catalogue_root:
             nodes = Menu.objects.filter(enabled=True)
-            if flat != None:
+            if flat is not None:
                 nodes = nodes.filter(level=0)
         else:
             nodes = Menu.objects.filter(enabled=True, full_url__startswith=catalogue_root.full_url).exclude(pk=catalogue_root.pk)
             if hasattr(catalogue_root, 'q_filters') and catalogue_root.q_filters:
                 nodes = nodes.filter(catalogue_root.q_filters)
-            if flat != None:
+            if flat is not None:
                 nodes = nodes.filter(level=catalogue_root.level + 1)
-        if exclude_index != None:
+        if exclude_index is not None:
             nodes = nodes.exclude(page_type='indx')
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
 
@@ -38,13 +61,13 @@ def is_activemenu(context, menu, active_text=' class="active"'):
 
 
 @register.simple_tag(takes_context=True)
-def render_breadcrumbs(context, template='_breadcrumbs'):
+def render_breadcrumbs(context, template='_breadcrumbs', add=None):
     try:
         menu = context['menu']
     except KeyError:
         return ''
     breadcrumbs = menu.get_breadcrumbs()
-    return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs}, context_instance=context)
+    return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs, 'add': add}, context_instance=context)
 
 
 @register.simple_tag(takes_context=True)

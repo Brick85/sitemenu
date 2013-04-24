@@ -8,6 +8,8 @@ PAGES = getattr(settings, 'SITEMENU_PAGES', (
 
 MENUCLASS = getattr(settings, 'SITEMENU_MENUCLASS', 'sitemenu.models.Menu')
 
+SPLIT_TO_HEADER_AND_FOOTER = getattr(settings, 'SITEMENU_SPLIT_TO_HEADER_AND_FOOTER', False)
+
 # SERVER CACHE
 
 SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
