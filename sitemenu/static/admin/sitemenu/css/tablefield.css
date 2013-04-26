@@ -1,0 +1,50 @@
+.clear {
+    clear: both;
+}
+.tf_table_control {
+    padding: 0px 10px 10px 10px;
+    float: left;
+}
+.tf_small_input {
+    width: 20px;
+}
+
+.tf_table_type_container {
+    padding: 4px 10px 14px 10px;
+}
+.tf_table_type_subcontainer {
+}
+
+.tf_table_type_input {
+    float: left;
+}
+.tf_table_type {
+    margin-right: 10px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    background-color: #CCC;
+    float: left;
+}
+
+.tf_table_type_1 {
+    border-top: 3px solid black;
+    height: 13px;
+}
+
+.tf_table_type_2 {
+    border-left: 3px solid black;
+    width: 13px;
+}
+
+.tf_highlited_row {
+    background-color: #EAEAEA;
+}
+
+.tf_selected_table_type_1 tr.tf_first_row input {
+    font-weight: bold;
+}
+
+.tf_selected_table_type_2 td.tf_first_column input {
+    font-weight: bold;
+}
