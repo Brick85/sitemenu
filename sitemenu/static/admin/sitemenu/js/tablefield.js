@@ -4,7 +4,7 @@
 
     function get_new_row(){
         return {
-            header: false,
+            //header: false,
             highlight: false,
             data: ['']
         };
@@ -12,12 +12,28 @@
 
     $(function(){
         $('.j_tablefield').each(init_tablefield);
+
+        $('.add-row a').click(function(){
+            var add_row = $(this).closest('tr');
+            if(add_row.length === 0){
+                add_row = $(this).parent();
+            }
+            if(add_row.length !== 0){
+                var textarea = add_row.prev().prev().find('.j_tablefield');
+                if(textarea.length > 0){
+                    textarea.each(init_tablefield);
+                }
+            }
+        });
     });
 
     function init_tablefield(){
 
-        tablefield_cnt++;
         var textarea = $(this);
+
+        tablefield_cnt++;
+
+        $('.tf_main_container', textarea.parent()).remove();
 
         textarea.hide();
 
@@ -33,11 +49,11 @@
             };
         }
 
-        var container = $('<div></div>');
+        var container = $('<div class="tf_main_container"></div>');
         var table_container = $('<div></div>');
         var table_control = $('<div class="tf_table_control"></div>');
-        var table_width_input = $('<input class="tf_small_input" value="' + data.width + '" type="text">');
-        var table_height_input = $('<input class="tf_small_input" value="' + data.height + '" type="text">');
+        var table_width_input = $('<input class="tf_small_input tf_hw_input" value="' + data.width + '" type="text">');
+        var table_height_input = $('<input class="tf_small_input tf_hw_input" value="' + data.height + '" type="text">');
         table_control.append(table_width_input);
         table_control.append('x');
         table_control.append(table_height_input);
@@ -70,6 +86,12 @@
 
         table_width_input.change(rebuild_table);
         table_height_input.change(rebuild_table);
+
+
+
+        // $('input.tf_hw_input', container).change(rebuild_table);
+        // $('input.tf_table_type_input', container).change(set_table_type);
+
 
         function rebuild_table(){
             var new_width = parseInt(table_width_input.val(), 10);

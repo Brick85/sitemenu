@@ -96,6 +96,6 @@ class TableWidget(forms.Textarea):
         js = ('admin/sitemenu/js/tablefield.js',)
 
     def render(self, name, value, attrs=None):
-        if value:
+        if isinstance(value, TableClass):
             value = value.as_string()
         return super(TableWidget, self).render(name, value, attrs)

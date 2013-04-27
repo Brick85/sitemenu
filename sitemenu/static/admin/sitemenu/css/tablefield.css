@@ -2,7 +2,7 @@
     clear: both;
 }
 .tf_table_control {
-    padding: 0px 10px 10px 10px;
+    padding: 0 10px;
     float: left;
 }
 .tf_small_input {
@@ -11,8 +11,6 @@
 
 .tf_table_type_container {
     padding: 4px 10px 14px 10px;
-}
-.tf_table_type_subcontainer {
 }
 
 .tf_table_type_input {
@@ -41,10 +39,10 @@
     background-color: #EAEAEA;
 }
 
-.tf_selected_table_type_1 tr.tf_first_row input {
+.tf_selected_table_type_1 .tf_first_row input {
     font-weight: bold;
 }
 
-.tf_selected_table_type_2 td.tf_first_column input {
+.tf_selected_table_type_2 .tf_first_column input {
     font-weight: bold;
 }
