@@ -45,7 +45,7 @@ class SiteMenuAdmin(ParentModel):
         self.list_display_links = ('indented_short_title',)
 
     def indented_short_title(self, item):
-        title = item.title
+        title = "<span class='menu_level_%s'>%s</span>" % (item.level, item.title)
         span = '<span class="result_list__ident_span"></span>' * item.level
         return mark_safe('%s%s<div class="drag_handle_container"><div class="drag_handle"></div></div>' % (span, title))
     indented_short_title.short_description = _('title')

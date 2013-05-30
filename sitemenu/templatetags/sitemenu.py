@@ -13,14 +13,14 @@ register = template.Library()
 
 if SPLIT_TO_HEADER_AND_FOOTER:
     @register.simple_tag(takes_context=True)
-    def render_sitemenu_header(context):
-        nodes = Menu.objects.filter(in_top_menu=True)
-        return render_sitemenu(context, nodes=nodes)
+    def render_sitemenu_header(context, *args, **kwargs):
+        kwargs['nodes'] = Menu.objects.filter(in_top_menu=True)
+        return render_sitemenu(context, *args, **kwargs)
 
     @register.simple_tag(takes_context=True)
-    def render_sitemenu_footer(context):
-        nodes = Menu.objects.filter(in_bottom_menu=True)
-        return render_sitemenu(context, nodes=nodes)
+    def render_sitemenu_footer(context, *args, **kwargs):
+        kwargs['nodes'] = Menu.objects.filter(in_bottom_menu=True)
+        return render_sitemenu(context, *args, **kwargs)
 
 
 @register.simple_tag(takes_context=True)

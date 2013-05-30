@@ -115,10 +115,8 @@ class SiteMenu(models.Model):
         return [int(v) for v in filter(None, self.parents_list.split(';'))]
 
     def get_childs(self):
-        try:
-            self._get_childs
-        except:
-            self._get_childs = self._default_manager.filter(parent=self).order_by('sort')
+        if not hasattr(self, '_get_childs'):
+            self._get_childs = self._default_manager.filter(parent=self, enabled=True).order_by('sort')
         return self._get_childs
 
     def create_tree(self, queryset):
