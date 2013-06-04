@@ -88,7 +88,7 @@ class SiteMenu(models.Model):
                 except TypeError:
                     self.sort = 0
 
-            self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MENU_MAX_ITEMS))) % self.sort
+            self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(MENU_MAX_ITEMS))) % self.sort
 
             self.has_childs = False
 
