@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER
+from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
 from . import import_item
 
 
@@ -10,17 +10,15 @@ class SiteMenu(models.Model):
 
     PAGES = PAGES_TYPES
 
-    MAX_LEVELS = 5
-    MAX_ITEMS = 99
     TYPE_TYPES = [(x[0], x[1]) for x in PAGES]
 
     # Tree fields
     sort       = models.IntegerField(_('sort'), default=0, editable=False)
-    sortorder  = models.CharField(max_length=MAX_LEVELS * len(str(MAX_ITEMS)), editable=False)
+    sortorder  = models.CharField(max_length=MENU_MAX_LEVELS * len(str(MENU_MAX_ITEMS)), editable=False)
     level      = models.PositiveSmallIntegerField(editable=False, default=0)
     has_childs = models.BooleanField(default=False, editable=False)
     parent     = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
-    parents_list = models.CharField(max_length=MAX_LEVELS * 5, editable=False, null=True, blank=True)
+    parents_list = models.CharField(max_length=MENU_MAX_LEVELS * 5, editable=False, null=True, blank=True)
 
     # Menu field
     full_url       = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
@@ -90,7 +88,7 @@ class SiteMenu(models.Model):
                 except TypeError:
                     self.sort = 0
 
-            self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MAX_ITEMS))) % self.sort
+            self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(self.MENU_MAX_ITEMS))) % self.sort
 
             self.has_childs = False
 
