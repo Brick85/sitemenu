@@ -7,7 +7,7 @@ $(function() {
         $('<div class="catcher_container"><span class="catcher catcher_before"><span></span></span><span class="catcher catcher_after"><span></span></span></div>').prependTo($('td', this)[0]);
     });
 
-    var loader = $('<div id="loader"><div></div></div>');
+    var loader = $('<div id="loader"><span>Loading...</span><div></div></div>');
     $('body').append(loader);
 
     var save_position = {
