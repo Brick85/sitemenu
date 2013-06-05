@@ -185,7 +185,12 @@
         }
 
         function save_table_to_field(){
-            textarea.val(JSON.stringify(data));
+            console.log(data);
+            if((data.width > 1 && data.height > 0) || (data.width > 0 && data.height > 1)){
+                textarea.val(JSON.stringify(data));
+            } else {
+                textarea.val('');
+            }
         }
 
     }
