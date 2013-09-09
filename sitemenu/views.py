@@ -39,7 +39,7 @@ def dispatcher(request, url):
                     url_add.append(url_arr[-1])
                     url_arr = url_arr[:-1]
 
-        if menu and menu.page_type == 'indx':
+        if menu and menu.page_type == 'indx' and not url_add:
             return HttpResponsePermanentRedirect(reverse('dispatcher', kwargs={'url': ''}))
 
     if not menu:
