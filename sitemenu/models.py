@@ -167,7 +167,7 @@ class SiteMenu(models.Model):
     def is_active(self, full_path):
         if full_path == '/' and self.page_type == 'indx':
             return True
-        return self.full_url in full_path
+        return '/' + self.full_url in full_path
 
     def get_breadcrumbs(self):
         return self._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])
