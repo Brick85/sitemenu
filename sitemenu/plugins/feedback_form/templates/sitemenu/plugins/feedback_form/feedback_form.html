@@ -1,0 +1,6 @@
+{% load i18n %}
+<form class="j_feedback_form" action="{% url 'save_feedback_form' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="feedbackformsubmit" value="{% trans "send" %}" />
+</form>
