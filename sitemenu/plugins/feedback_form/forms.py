@@ -40,9 +40,7 @@ class FeedbackFormForm(forms.ModelForm):
     def clean(self):
         cd = self.cleaned_data
         for field in FeedbackForm.REQUIRED_FIELDS:
-            if field not in self.fields:
-                continue
-            if type(field) == type(tuple()):
+            if type(field) == tuple:
                 if all([gfield in cd for gfield in field]):
                     if not any([(cd[gfield]) for gfield in field]):
                         for gfield in field:
@@ -50,6 +48,8 @@ class FeedbackFormForm(forms.ModelForm):
                             if gfield in cd:
                                 del cd[gfield]
             else:
+                if field not in self.fields:
+                    continue
                 if not field in cd or not cd[field]:
                     self._errors[field] = self.error_class([FeedbackFormForm.error_messages['required_field']])
                     if field in cd:
