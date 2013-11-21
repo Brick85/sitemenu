@@ -19,7 +19,7 @@ class FeedbackFormAdmin(admin.ModelAdmin):
 
 
     def get_fieldsets(self, request, obj=None):
-        form = self.get_form(request, obj)
+        form = self.get_form(request, obj, fields=None)
         fields = [field for field in list(form.base_fields) + list(self.get_readonly_fields(request, obj)) if field in self.get_readonly_fields(request, obj)]
         return [(None, {'fields': fields})]
 
