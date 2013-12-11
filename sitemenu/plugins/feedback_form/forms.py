@@ -2,6 +2,9 @@ from django import forms
 from models import FeedbackForm
 from django.utils.translation import ugettext_lazy as _
 from sitemenu.helpers import get_client_ip
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 
@@ -64,3 +67,10 @@ class FeedbackFormForm(forms.ModelForm):
         if self.request.user.is_authenticated():
             obj.user = self.request.user
         obj.save()
+
+
+        body = render_to_string("sitemenu/plugins/feedback_form/mail_body.html", {'obj': obj})
+        subject = render_to_string("sitemenu/plugins/feedback_form/mail_subject.txt", {'obj': obj}).strip()
+        email = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [mail for name, mail in settings.MANAGERS])
+        email.content_subtype = "html"
+        email.send()
