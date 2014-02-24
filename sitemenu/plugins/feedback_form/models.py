@@ -10,9 +10,7 @@ class FeedbackFormAbstract(models.Model):
 
     class Meta:
         abstract = True
-        verbose_name = _('feedback form')
-        verbose_name_plural = _('feedback forms')
-        
+
     def __unicode__(self):
         return self.get_message()
 
@@ -32,7 +30,9 @@ class FeedbackFormBase(FeedbackFormAbstract):
 
     class Meta:
         abstract = True
-
+        verbose_name = _('feedback form')
+        verbose_name_plural = _('feedback forms')
+        
     def __unicode__(self):
         if self.user:
             return self.user.get_name()
