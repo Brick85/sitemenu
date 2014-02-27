@@ -35,7 +35,7 @@ def set_root_menu(context, var="root_menu"):
 
 
 @register.simple_tag(takes_context=True)
-def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None):
+def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None, levels=None):
     if not nodes:
         if not catalogue_root:
             nodes = Menu.objects.filter(enabled=True)
@@ -47,8 +47,14 @@ def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, e
                 nodes = nodes.filter(catalogue_root.q_filters)
             if flat is not None:
                 nodes = nodes.filter(level=catalogue_root.level + 1)
-        if exclude_index is not None:
-            nodes = nodes.exclude(page_type='indx')
+    if levels is not None:
+        try:
+            root_level = catalogue_root.level
+        except AttributeError:
+            root_level = 0
+        nodes = nodes.filter(level__lt=root_level + levels)
+    if exclude_index is not None:
+        nodes = nodes.exclude(page_type='indx')
     return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
 
 
