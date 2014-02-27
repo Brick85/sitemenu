@@ -147,7 +147,7 @@ class SiteMenu(models.Model):
             current_path.append(obj)
         return top_nodes
 
-    def rebuild(self, rebuild_sort):
+    def rebuild(self, rebuild_sort=False):
         tmp_sort = 1
         for menu in self._default_manager.filter(parent=None):
             if rebuild_sort:
