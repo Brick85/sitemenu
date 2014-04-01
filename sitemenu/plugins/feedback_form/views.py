@@ -1,4 +1,8 @@
-from forms import FeedbackFormForm
+#from forms import FeedbackFormForm
+from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_FORM
+from sitemenu import import_item
+FeedbackFormForm = import_item(PLUGIN_FEEDBACK_FORM)
+
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib import messages

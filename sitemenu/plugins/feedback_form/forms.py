@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 
 class FeedbackFormForm(forms.ModelForm):
     error_messages = {
-        'required_field': _('This field is required!'),
+        'required_field': _('This field is rquired!'),
         'at_least_one_required': _('At least one field must be filled!'),
     }
 
@@ -22,6 +22,8 @@ class FeedbackFormForm(forms.ModelForm):
         self.request = request
 
         self.__delete_fields__()
+
+        self.custom_init(request)
 
         return f
 
@@ -39,6 +41,9 @@ class FeedbackFormForm(forms.ModelForm):
             del self.fields[field]
 
         self.fields.keyOrder = fields
+
+    def custom_init(self, request):
+        pass
 
     def clean(self):
         cd = self.cleaned_data

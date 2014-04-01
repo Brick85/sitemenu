@@ -1,7 +1,11 @@
 from django import template
-from ..forms import FeedbackFormForm
-from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
+#from ..forms import FeedbackFormForm
+from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_FORM
+from sitemenu import import_item
+FeedbackFormForm = import_item(PLUGIN_FEEDBACK_FORM)
+
+#from django.contrib import messages
+#from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 register = template.Library()
 
@@ -9,10 +13,8 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def render_feedback_form(context):
-
     request = context['request']
-    user = request.user
-
+    #user = request.user
 
     form = FeedbackFormForm(request)
 

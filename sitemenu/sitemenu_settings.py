@@ -14,6 +14,8 @@ MENU_MAX_ITEMS = getattr(settings, 'SITEMENU_MENU_MAX_ITEMS', 99)
 
 SPLIT_TO_HEADER_AND_FOOTER = getattr(settings, 'SITEMENU_SPLIT_TO_HEADER_AND_FOOTER', False)
 
+PLUGIN_FEEDBACK_FORM = getattr(settings, 'SITEMENU_PLUGIN_FEEDBACK_FORM', 'sitemenu.plugins.feedback_form.forms.FeedbackFormForm')
+
 # SERVER CACHE
 
 SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
