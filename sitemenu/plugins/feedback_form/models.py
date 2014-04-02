@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from sitemenu import import_item
-from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_CLASS
+from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_MODEL
 
 
 class FeedbackFormAbstract(models.Model):
@@ -41,5 +41,5 @@ class FeedbackFormBase(FeedbackFormAbstract):
         else:
             return "%s (%s)" % (self.user_name, self.user_email)
 
-class FeedbackForm(import_item(PLUGIN_FEEDBACK_CLASS) if PLUGIN_FEEDBACK_CLASS else FeedbackFormBase):
+class FeedbackForm(import_item(PLUGIN_FEEDBACK_MODEL) if PLUGIN_FEEDBACK_MODEL else FeedbackFormBase):
     pass
