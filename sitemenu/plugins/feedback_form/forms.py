@@ -10,8 +10,8 @@ from django.template.loader import render_to_string
 
 class FeedbackFormForm(forms.ModelForm):
     error_messages = {
-        'required_field': _('This field is rquired!'),
-        'at_least_one_required': _('At least one field must be filled!'),
+        'required_field': _('This field is required.'),
+        'at_least_one_required': _('At least one field must be filled.'),
     }
 
     class Meta:
