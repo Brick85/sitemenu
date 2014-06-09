@@ -183,7 +183,10 @@ class SiteMenu(models.Model):
 
     def get_absolute_url(self):
         if self.redirect_url:
-            return self.redirect_url
+            if self.redirect_url.startswith('/'):
+                return reverse('dispatcher', args=(self.redirect_url[1:],))
+            else:
+                return self.redirect_url
         if self.redirect_to_first_child:
             return self._default_manager.filter(parent=self)[0].get_absolute_url()
         if self.page_type == 'indx':
