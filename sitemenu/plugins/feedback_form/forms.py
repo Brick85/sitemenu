@@ -5,7 +5,7 @@ from sitemenu.helpers import get_client_ip
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
-
+from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD
 
 
 class FeedbackFormForm(forms.ModelForm):
@@ -13,6 +13,8 @@ class FeedbackFormForm(forms.ModelForm):
         'required_field': _('This field is required.'),
         'at_least_one_required': _('At least one field must be filled.'),
     }
+    if PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD:
+        surname = forms.CharField(required=False)
 
     class Meta:
         model = FeedbackForm
@@ -20,6 +22,9 @@ class FeedbackFormForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         f = super(FeedbackFormForm, self).__init__(*args, **kwargs)
         self.request = request
+
+        if PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD:
+            self.fields['surname'].widget.attrs['class'] = 'spm_cls'
 
         self.__delete_fields__()
 
@@ -29,9 +34,15 @@ class FeedbackFormForm(forms.ModelForm):
 
     def __delete_fields__(self):
         if self.request.user.is_authenticated():
-            fields = FeedbackForm.FIELDS_FOR_AUTHENICATED_USER
+            fields_to_use = FeedbackForm.FIELDS_FOR_AUTHENICATED_USER
         else:
-            fields = FeedbackForm.FIELDS_FOR_NON_AUTHENICATED_USER
+            fields_to_use = FeedbackForm.FIELDS_FOR_NON_AUTHENICATED_USER
+
+        if PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD:
+            fields = fields_to_use + ['surname']
+        else:
+            fields = fields_to_use
+
         fields_to_del = []
         for field in self.fields:
             if field not in fields:
@@ -47,6 +58,12 @@ class FeedbackFormForm(forms.ModelForm):
 
     def clean(self):
         cd = self.cleaned_data
+
+
+        if PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD:
+            if 'surname' in cd and cd['surname']:
+                raise forms.ValidationError("Spam message!")
+
         for field in FeedbackForm.REQUIRED_FIELDS:
             if type(field) == tuple:
                 if all([gfield in cd for gfield in field]):
