@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<ul class="langs">
+    {% for data in langs %}
+        <li {% if data.active %}class="active"{% endif %}>
+            <a href="{{ data.link }}" class="{{ data.name|lower }}"><span>{{ data.code|upper }}</span></a>
+        </li>
+    {% endfor %}
+</ul>
