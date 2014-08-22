@@ -2,12 +2,14 @@ from django import template
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
+from django.template import RequestContext
+from django.template.loader import get_template
 from .. import import_item
-from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER
+from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
-
 #from django.core.cache import cache
 
 
@@ -21,7 +23,6 @@ if SPLIT_TO_HEADER_AND_FOOTER:
     def render_sitemenu_footer(context, *args, **kwargs):
         kwargs['nodes'] = Menu.objects.filter(in_bottom_menu=True)
         return render_sitemenu(context, *args, **kwargs)
-
 
 @register.simple_tag(takes_context=True)
 def set_root_menu(context, var="root_menu"):
@@ -86,6 +87,26 @@ def render_seometa(context, custom_menu=False):
     else:
         menu = custom_menu
     return render_to_string('sitemenu/_seometa.html', {'menu': menu}, context_instance=context)
+
+
+@register.simple_tag(takes_context=True)
+def get_languages_menu(context):
+    path = context['request'].get_full_path()
+    current_ln = get_language()
+    langs = []
+
+    for ln in LANGUAGES:
+        langs.append({
+            'name': ln[1],
+            'code': ln[0],
+            'link': path.replace('/%s/' % current_ln, '/%s/' % ln[0]),
+            'active': True if current_ln == ln[0] else False
+        })
+
+    c = RequestContext(context['request'], {'langs': langs,})
+    t = get_template('sitemenu/_languages.html')
+    menu = t.render(c)
+    return menu
 
 
 @register.tag

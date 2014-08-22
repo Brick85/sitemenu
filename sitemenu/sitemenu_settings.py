@@ -23,6 +23,9 @@ PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD = getattr(settings, 'SITEMENU_PLUGIN_FEEDBACK_
 SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
 SERVER_CACHE_ARGS_FUNC = getattr(settings, 'SITEMENU_SERVER_CACHE_ARGS_FUNC', None)
 
+# Languages
+LANGUAGES = getattr(settings, 'LANGUAGES', (('en','en')))
+
 # You need to invalidate cache!
 # basic method:
 
