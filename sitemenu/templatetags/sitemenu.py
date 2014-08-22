@@ -102,11 +102,7 @@ def get_languages_menu(context):
             'link': path.replace('/%s/' % current_ln, '/%s/' % ln[0]),
             'active': True if current_ln == ln[0] else False
         })
-
-    c = RequestContext(context['request'], {'langs': langs,})
-    t = get_template('sitemenu/_languages.html')
-    menu = t.render(c)
-    return menu
+    return render_to_string('sitemenu/_languages.html', {'langs': langs,})
 
 
 @register.tag

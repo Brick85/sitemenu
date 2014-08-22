@@ -24,7 +24,7 @@ SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
 SERVER_CACHE_ARGS_FUNC = getattr(settings, 'SITEMENU_SERVER_CACHE_ARGS_FUNC', None)
 
 # Languages
-LANGUAGES = getattr(settings, 'LANGUAGES', (('en','en')))
+LANGUAGES = getattr(settings, 'LANGUAGES', (('en','en'),))
 
 # You need to invalidate cache!
 # basic method:
