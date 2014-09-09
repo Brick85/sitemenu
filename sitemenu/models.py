@@ -126,7 +126,8 @@ class SiteMenu(models.Model):
             setattr(self, cache_key, childs)
         return getattr(self, cache_key)
 
-    def create_tree(self, queryset):
+    @staticmethod
+    def create_tree(queryset):
         current_path = []
         top_nodes = []
         root_level = None

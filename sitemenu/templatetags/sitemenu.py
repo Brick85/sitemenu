@@ -37,7 +37,7 @@ def set_root_menu(context, var="root_menu"):
 
 @register.simple_tag(takes_context=True)
 def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None, levels=None):
-    if not nodes:
+    if nodes is None:
         if not catalogue_root:
             nodes = Menu.objects.filter(enabled=True)
             if flat is not None:
@@ -157,7 +157,7 @@ def recurse_sitemenu(parser, token):
         def render(self, context):
             queryset = context[self.queryset_var]
             try:
-                roots = queryset[0].create_tree(queryset)
+                roots = queryset.model.create_tree(queryset)
             except IndexError:
                 return ''
             bits = [self._render_node(context, node) for node in roots]
