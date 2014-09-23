@@ -6,7 +6,7 @@ from django.utils.translation import get_language
 from django.template import RequestContext
 from django.template.loader import get_template
 from .. import import_item
-from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES
+from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES, DIGG_PAGINATOR_SHOW_PAGES
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
@@ -34,6 +34,57 @@ def set_root_menu(context, var="root_menu"):
     context[var] = root_menu
     return ''
 
+@register.tag(name="digg_pagination")
+def do_digg_pagination(parser, token):
+    try:
+        tag_name, current_page, total_pages = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError("%r tag requires exactly two arguments" % token.contents.split()[0])
+    nodelist = parser.parse(('end_digg_pagination',))
+    parser.delete_first_token()
+    return DiggPaginationNode(nodelist, current_page, total_pages)
+
+class DiggPaginationNode(template.Node):
+    def __init__(self, nodelist, current_page, total_pages):
+        self.nodelist = nodelist
+        self.current_page = template.Variable(current_page)
+        self.total_pages = template.Variable(total_pages)
+
+    def render(self, context):
+        current_page = self.current_page.resolve(context)
+        total_pages = self.total_pages.resolve(context)
+
+        if total_pages <= 0:
+            return ''
+
+        output = ''
+
+        if total_pages <= DIGG_PAGINATOR_SHOW_PAGES + 4:
+            pages = range(1, total_pages+1)
+        else:
+            pages = [1]
+            if current_page < DIGG_PAGINATOR_SHOW_PAGES:
+                pages += range(2,DIGG_PAGINATOR_SHOW_PAGES + 3)
+                pages += [0]
+            elif current_page > total_pages - DIGG_PAGINATOR_SHOW_PAGES + 1:
+                pages += [0]
+                pages += range(total_pages - DIGG_PAGINATOR_SHOW_PAGES - 1, total_pages)
+            else:
+                pages += [0]
+                pages += range(current_page - DIGG_PAGINATOR_SHOW_PAGES/2, current_page + DIGG_PAGINATOR_SHOW_PAGES/2 + 1)
+                pages += [0]
+            pages += [total_pages]
+
+        # print "%02d" % current_page, ["%02d" % i for i in pages]
+
+        for i in pages:
+            context['iterpage'] = {
+                'num': i,
+                'active': True if i == current_page else False,
+                'is_spacer': True if i == 0 else False
+            }
+            output += self.nodelist.render(context)
+        return output
 
 @register.simple_tag(takes_context=True)
 def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None, levels=None):
