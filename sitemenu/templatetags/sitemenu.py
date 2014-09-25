@@ -86,6 +86,41 @@ class DiggPaginationNode(template.Node):
             output += self.nodelist.render(context)
         return output
 
+
+@register.tag(name="highlight_results")
+def do_highlight_results(parser, token):
+    try:
+        tag_name, highlite_text = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError("%r tag requires exactly one argument" % token.contents.split()[0])
+    nodelist = parser.parse(('end_highlight_results',))
+    parser.delete_first_token()
+    return HighlightResultsNode(nodelist, highlite_text)
+
+class HighlightResultsNode(template.Node):
+    def __init__(self, nodelist, highlite_text):
+        self.nodelist = nodelist
+        self.highlite_text = template.Variable(highlite_text)
+
+    def render(self, context):
+        highlite_text = self.highlite_text.resolve(context)
+        output = self.nodelist.render(context)
+
+        import re
+        pattern = re.compile(highlite_text, re.IGNORECASE)
+        output_hl = ""
+        i = 0
+        for m in pattern.finditer(output):
+            output_hl += "".join([output[i:m.start()],
+                       "<span class='hl'>",
+                       output[m.start():m.end()],
+                       "</span>"])
+            i = m.end()
+        output_hl += output[i:]
+
+        return output_hl
+
+
 @register.simple_tag(takes_context=True)
 def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, exclude_index=None, nodes=None, levels=None):
     if nodes is None:
