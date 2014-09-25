@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 from django.template import RequestContext
 from django.template.loader import get_template
+import re
 from .. import import_item
 from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES, DIGG_PAGINATOR_SHOW_PAGES
 Menu = import_item(MENUCLASS)
@@ -106,7 +107,9 @@ class HighlightResultsNode(template.Node):
         highlite_text = self.highlite_text.resolve(context)
         output = self.nodelist.render(context)
 
-        import re
+        if highlite_text is None or len(highlite_text) == 0:
+            return output
+
         pattern = re.compile(highlite_text, re.IGNORECASE)
         output_hl = ""
         i = 0
