@@ -11,7 +11,7 @@ class SiteMenuSitemap(Sitemap):
 
     def lastmod(self, obj):
         if obj.page_type == 'indx':
-            return ''
+            return None
         return obj.date_modified
 
     def location(self, obj):
