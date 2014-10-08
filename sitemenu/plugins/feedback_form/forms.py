@@ -18,6 +18,7 @@ class FeedbackFormForm(forms.ModelForm):
 
     class Meta:
         model = FeedbackForm
+        fields = '__all__'
 
     def __init__(self, request, *args, **kwargs):
         f = super(FeedbackFormForm, self).__init__(*args, **kwargs)
