@@ -111,3 +111,6 @@ msgstr ""
 #, python-format
 msgid "%s tag requires a queryset"
 msgstr ""
+
+msgid "At least one field must be filled."
+msgstr "Nepieciešams aizpildīt vismaz vienu lauku."

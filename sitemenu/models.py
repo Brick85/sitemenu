@@ -57,7 +57,7 @@ class SiteMenu(models.Model):
     def __unicode__(self):
         return "%s%s" % ("- " * self.level, self.title)
 
-    def save(self, skip_tree_update=False, *args, **kwargs):
+    def save(self, skip_tree_update=False, rebuild_sort=False, *args, **kwargs):
         if not skip_tree_update:
             if self.get_parent():
                 parent = self.get_parent()
@@ -80,7 +80,7 @@ class SiteMenu(models.Model):
 
             if not self.pk:
                 try:
-                    siblings = parent.get_childs()
+                    siblings = parent.get_childs(only_enabled=False)
                 except AttributeError:
                     siblings = self._default_manager.filter(parent=None)
                 try:
@@ -91,11 +91,14 @@ class SiteMenu(models.Model):
             self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(MENU_MAX_ITEMS))) % self.sort
 
             self.has_childs = False
-
-            for child in self.get_childs():
+            tmp_sort = 1
+            for child in self.get_childs(only_enabled=False):
                 self.has_childs = True
                 child._get_parent = self
-                child.save()
+                if rebuild_sort:
+                    child.sort = tmp_sort
+                    tmp_sort += 1
+                child.save(rebuild_sort=rebuild_sort)
 
             if not self.has_childs:
                 self.redirect_to_first_child = False
@@ -112,12 +115,19 @@ class SiteMenu(models.Model):
     def get_parents_ids_list(self):
         return [int(v) for v in filter(None, self.parents_list.split(';'))]
 
-    def get_childs(self):
-        if not hasattr(self, '_get_childs'):
-            self._get_childs = self._default_manager.filter(parent=self, enabled=True).order_by('sort')
-        return self._get_childs
+    def get_childs(self, only_enabled=True):
+        cache_key = '_get_childs'
+        if only_enabled:
+            cache_key += '_enabled'
+        if not hasattr(self, cache_key):
+            childs = self._default_manager.filter(parent=self).order_by('sort')
+            if only_enabled:
+                childs = childs.filter(enabled=True)
+            setattr(self, cache_key, childs)
+        return getattr(self, cache_key)
 
-    def create_tree(self, queryset):
+    @staticmethod
+    def create_tree(queryset):
         current_path = []
         top_nodes = []
         root_level = None
@@ -127,20 +137,37 @@ class SiteMenu(models.Model):
                 root_level = node_level
             if node_level < root_level:
                 raise ValueError(_("cache_tree_children was passed nodes in the wrong order!"))
-            obj._get_childs = []
+            obj._get_childs_enabled = []
 
             while len(current_path) > node_level - root_level:
                 current_path.pop(-1)
             if node_level == root_level:
                 top_nodes.append(obj)
             else:
-                current_path[-1]._get_childs.append(obj)
+                current_path[-1]._get_childs_enabled.append(obj)
             current_path.append(obj)
         return top_nodes
 
-    def rebuild(self):
+    def rebuild(self, rebuild_sort=False):
+        tmp_sort = 1
         for menu in self._default_manager.filter(parent=None):
-            menu.save()
+            if rebuild_sort:
+                menu.sort = tmp_sort
+                tmp_sort += 1
+            menu.save(rebuild_sort=rebuild_sort)
+
+    if SPLIT_TO_HEADER_AND_FOOTER:
+        def rebuild_intop_and_inbottom_menu(self):
+            for menu in self._default_manager.filter(parent=None):
+                menu.apply_attr_to_all_childs('in_top_menu')
+                menu.apply_attr_to_all_childs('in_bottom_menu')
+
+    def apply_attr_to_all_childs(self, attr):
+        attr_value = getattr(self, attr)
+        for child in self.get_childs(only_enabled=False):
+            setattr(child, attr, attr_value)
+            child.save(skip_tree_update=True)
+            child.apply_attr_to_all_childs(attr)
 
     def render(self, request, url_add):
         use_page = None
@@ -157,7 +184,10 @@ class SiteMenu(models.Model):
 
     def get_absolute_url(self):
         if self.redirect_url:
-            return self.redirect_url
+            if self.redirect_url.startswith('/'):
+                return reverse('dispatcher', args=(self.redirect_url[1:],))
+            else:
+                return self.redirect_url
         if self.redirect_to_first_child:
             return self._default_manager.filter(parent=self)[0].get_absolute_url()
         if self.page_type == 'indx':
@@ -167,7 +197,7 @@ class SiteMenu(models.Model):
     def is_active(self, full_path):
         if full_path == '/' and self.page_type == 'indx':
             return True
-        return self.full_url in full_path
+        return '/' + self.full_url in full_path
 
     def get_breadcrumbs(self):
         return self._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])

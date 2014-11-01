@@ -115,3 +115,6 @@ msgstr "тег %s должен принимать queryset"
 
 #~ msgid "seo title"
 #~ msgstr "seo заголовок"
+
+msgid "At least one field must be filled."
+msgstr "Необходимо заполнить хотя бы одно поле."

@@ -1,0 +1,7 @@
+<ul class="langs">
+    {% for data in langs %}
+        <li{% if data.active %} class="active"{% endif %}>
+            <a href="{{ data.link }}" class="lang_{{ data.name|lower }}"><span>{{ data.code|upper }}</span></a>
+        </li>
+    {% endfor %}
+</ul>

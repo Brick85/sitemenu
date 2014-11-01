@@ -14,10 +14,24 @@ MENU_MAX_ITEMS = getattr(settings, 'SITEMENU_MENU_MAX_ITEMS', 99)
 
 SPLIT_TO_HEADER_AND_FOOTER = getattr(settings, 'SITEMENU_SPLIT_TO_HEADER_AND_FOOTER', False)
 
+PLUGIN_FEEDBACK_FORM = getattr(settings, 'SITEMENU_PLUGIN_FEEDBACK_FORM', 'sitemenu.plugins.feedback_form.forms.FeedbackFormForm')
+PLUGIN_FEEDBACK_MODEL = getattr(settings, 'SITEMENU_PLUGIN_FEEDBACK_MODEL', None)
+PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD = getattr(settings, 'SITEMENU_PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD', False)
+
+DIGG_PAGINATOR_SHOW_PAGES = getattr(settings, 'SITEMENU_DIGG_PAGINATOR_SHOW_PAGES', 5)
+
+if DIGG_PAGINATOR_SHOW_PAGES % 2 == 0:
+    DIGG_PAGINATOR_SHOW_PAGES += 1
+if DIGG_PAGINATOR_SHOW_PAGES < 3:
+    DIGG_PAGINATOR_SHOW_PAGES = 3
+
 # SERVER CACHE
 
 SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
 SERVER_CACHE_ARGS_FUNC = getattr(settings, 'SITEMENU_SERVER_CACHE_ARGS_FUNC', None)
+
+# Languages
+LANGUAGES = getattr(settings, 'LANGUAGES', (('en','en'),))
 
 # You need to invalidate cache!
 # basic method:

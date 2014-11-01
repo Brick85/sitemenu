@@ -2,13 +2,13 @@
 from setuptools import setup
 
 setup(name='django-sitemenu',
-      version='0.0.3',
+      version='0.0.4',
       description='Nested menu for django projects.',
       long_description='Nested menu for django projects. Without MPTT and with drag\'n\'drop sorting.'
                        'Easy customizable. Looks like simple model for using.',
       author='Vital Belikov',
       author_email='vital@qwe.lv',
-      packages=['sitemenu', 'sitemenu.templatetags'],
+      packages=['sitemenu', 'sitemenu.templatetags', 'sitemenu.mixins'],
       url='https://github.com/Brick85/sitemenu/',
       include_package_data=True,
       zip_safe=False,
