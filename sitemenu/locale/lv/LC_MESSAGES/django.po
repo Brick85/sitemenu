@@ -3,25 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 14:41+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-11-02 00:45+0200\n"
+"PO-Revision-Date: 2014-11-02 00:47+0200\n"
+"Last-Translator: alexey <alexey@trialine.lv>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2)\n"
+"2);\n"
+"X-Generator: Poedit 1.6.9\n"
 
-#: admin.py:49 models.py:33
+#: admin.py:51 models.py:31
 msgid "title"
-msgstr ""
+msgstr "nosaukums"
 
 #: admin_views.py:21
 msgid "Unexpected error."
@@ -29,7 +29,7 @@ msgstr ""
 
 #: admin_views.py:35
 msgid "Wrong position."
-msgstr ""
+msgstr "Nepareiza vieta."
 
 #: admin_views.py:45
 msgid "Impossible movement."
@@ -39,78 +39,146 @@ msgstr ""
 msgid "Item moved."
 msgstr ""
 
-#: models.py:18
+#: mixins/video_mixin.py:16
+msgid "video ID"
+msgstr ""
+
+#: mixins/video_mixin.py:16
+msgid ""
+"Support Youtube (http://www.youtube.com/watch?v=ID) and Vimeo (http://vimeo."
+"com/ID)"
+msgstr ""
+
+#: models.py:16
 msgid "sort"
 msgstr ""
 
-#: models.py:22
+#: models.py:20
 msgid "parent"
 msgstr ""
 
-#: models.py:27
+#: models.py:25
 msgid "date added"
 msgstr ""
 
-#: models.py:28
+#: models.py:26
 msgid "date modified"
 msgstr ""
 
-#: models.py:31
+#: models.py:29
 msgid "page type"
 msgstr ""
 
-#: models.py:34
+#: models.py:32
 msgid "url"
 msgstr ""
 
-#: models.py:36
+#: models.py:34
 msgid "h1 title"
 msgstr ""
 
-#: models.py:37
+#: models.py:35
 msgid "page title"
 msgstr ""
 
-#: models.py:38
+#: models.py:36
 msgid "seo keywords"
 msgstr ""
 
-#: models.py:39
+#: models.py:37
 msgid "seo description"
 msgstr ""
 
-#: models.py:41
+#: models.py:39
 msgid "content"
 msgstr ""
 
-#: models.py:43
+#: models.py:41
 msgid "redirect url"
 msgstr ""
 
-#: models.py:44
+#: models.py:42
 msgid "redirect to first child"
 msgstr ""
 
-#: models.py:46
+#: models.py:44
 msgid "enabled"
 msgstr ""
 
-#: models.py:49
+#: models.py:47
+msgid "show in top menu"
+msgstr ""
+
+#: models.py:48
+msgid "show in bottom menu"
+msgstr ""
+
+#: models.py:51
 msgid "menu"
 msgstr ""
 
-#: models.py:50
+#: models.py:52
 msgid "menus"
 msgstr ""
 
-#: models.py:116
+#: models.py:139
 msgid "cache_tree_children was passed nodes in the wrong order!"
 msgstr ""
 
-#: templatetags/sitemenu.py:75
+#: plugins/feedback_form/forms.py:13
+msgid "This field is required."
+msgstr "Šīs lauks ir obligāts."
+
+#: plugins/feedback_form/forms.py:14
+msgid "At least one field must be filled."
+msgstr "Nepieciešams aizpildīt vismaz vienu lauku."
+
+#: plugins/feedback_form/models.py:9 plugins/feedback_form/models.py:22
+msgid "message"
+msgstr "ziņa"
+
+#: plugins/feedback_form/models.py:10
+msgid "date"
+msgstr "datums"
+
+#: plugins/feedback_form/models.py:11
+msgid "IP"
+msgstr ""
+
+#: plugins/feedback_form/models.py:28
+msgid "user"
+msgstr ""
+
+#: plugins/feedback_form/models.py:29
+msgid "first name"
+msgstr "vārds"
+
+#: plugins/feedback_form/models.py:30
+msgid "email"
+msgstr "e-pasts"
+
+#: plugins/feedback_form/models.py:31
+msgid "phone"
+msgstr "tālrunis"
+
+#: plugins/feedback_form/models.py:35
+msgid "feedback form"
+msgstr "kontaktu forma"
+
+#: plugins/feedback_form/models.py:36
+msgid "feedback forms"
+msgstr "kontaktu formas"
+
+#: plugins/feedback_form/templates/sitemenu/plugins/feedback_form/feedback_form.html:5
+msgid "send"
+msgstr "nosūtīt"
+
+#: plugins/feedback_form/templates/sitemenu/plugins/feedback_form/feedback_form_sent.html:2
+#: plugins/feedback_form/views.py:21
+msgid "Feedback form sent."
+msgstr "Jūsu informācija veiksmīgi nosūtīta."
+
+#: templatetags/sitemenu.py:222
 #, python-format
 msgid "%s tag requires a queryset"
 msgstr ""
-
-msgid "At least one field must be filled."
-msgstr "Nepieciešams aizpildīt vismaz vienu lauku."
