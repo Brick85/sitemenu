@@ -1,13 +1,14 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
+from django.utils.deconstruct import deconstructible
+
 
 try:
     from pytils.translit import translify
 except ImportError:
-   translify = lambda x: x
+    translify = lambda x: x
 import re
 slugify_replace_pattern = re.compile('[^\w\.]+')
-
 
 
 def get_paginated_list(objects, page, on_page):
@@ -29,12 +30,16 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-def slugify_and_transliterate(string):
-    return slugify_replace_pattern.sub('_', translify(string))
 
+@deconstructible
+class UploadToSlugify(object):
+    def slugify_and_transliterate(self, string):
+        return slugify_replace_pattern.sub('_', translify(string))
 
-def upload_to_slugify(basedir):
-    def make_upload_path(instance, filename):
-        filename_slug = slugify_and_transliterate(filename)
-        return u"%s/%s" % (basedir, filename_slug)
-    return make_upload_path
+    def __init__(self, basedir):
+        self.basedir = basedir
+
+    def __call__(self, instance, filename):
+        filename_slug = self.slugify_and_transliterate(filename)
+        return u"%s/%s" % (self.basedir, filename_slug)
+upload_to_slugify = UploadToSlugify
