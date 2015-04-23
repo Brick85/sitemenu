@@ -37,7 +37,7 @@ class FeedbackFormBase(FeedbackFormAbstract):
 
     def __unicode__(self):
         if self.user:
-            return self.user.get_name()
+            return self.user.get_username()
         else:
             return "%s (%s)" % (self.user_name, self.user_email)
 
