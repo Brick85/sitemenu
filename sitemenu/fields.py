@@ -3,16 +3,13 @@ from django import forms
 from django.utils.html import mark_safe
 import json
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^sitemenu\.fields\.TableField"])
-
 
 class TableClass(object):
 
     def __init__(self, value):
         try:
             self.data = json.loads(value)
-        except ValueError:
+        except:
             self.data = {
                 'width': 0,
                 'height': 0,
@@ -82,7 +79,9 @@ class TableField(models.TextField):
             return value
         return TableClass(value)
 
-    def get_prep_value(self, value):
+    def get_db_prep_value(self, value, connection, prepared=False):
+        if not value:
+            value = TableClass(value)
         value.clean_data()
         return value.as_string()
 
