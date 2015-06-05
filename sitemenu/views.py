@@ -30,7 +30,10 @@ def dispatcher(request, url):
             menu = None
 
         if not menu:
-            url_arr = url.split('/')[:-1]
+            url_arr = url.split('/')
+            if url_arr[-1] == '':
+                url_arr = url_arr[:-1]
+
             while url_arr:
                 try:
                     menu = Menu.objects.get(enabled=True, full_url='/'.join(url_arr) + '/')
