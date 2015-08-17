@@ -11,6 +11,7 @@ MENUCLASS = getattr(settings, 'SITEMENU_MENUCLASS', 'sitemenu.models.Menu')
 
 MENU_MAX_LEVELS = getattr(settings, 'SITEMENU_MENU_MAX_LEVELS', 5)
 MENU_MAX_ITEMS = getattr(settings, 'SITEMENU_MENU_MAX_ITEMS', 99)
+MENU_APPEND_SLASH = getattr(settings, 'SITEMENU_APPEND_SLASH', settings.APPEND_SLASH)
 
 SPLIT_TO_HEADER_AND_FOOTER = getattr(settings, 'SITEMENU_SPLIT_TO_HEADER_AND_FOOTER', False)
 
