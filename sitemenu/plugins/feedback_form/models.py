@@ -6,9 +6,9 @@ from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_MODEL
 
 
 class FeedbackFormAbstract(models.Model):
-    message  = models.TextField(_("message"))
+    message = models.TextField(_("message"))
     date_added = models.DateTimeField(_("date"), auto_now_add=True)
-    ip_address = models.IPAddressField(_("IP"))
+    ip_address = models.GenericIPAddressField(_("IP"))
 
     class Meta:
         abstract = True
@@ -20,6 +20,7 @@ class FeedbackFormAbstract(models.Model):
         return self.message.replace('\n', '')
     get_message.allow_tags = True
     get_message.short_description = _('message')
+
 
 class FeedbackFormBase(FeedbackFormAbstract):
     FIELDS_FOR_AUTHENICATED_USER = ['message']
@@ -40,6 +41,7 @@ class FeedbackFormBase(FeedbackFormAbstract):
             return self.user.get_username()
         else:
             return "%s (%s)" % (self.user_name, self.user_email)
+
 
 class FeedbackForm(import_item(PLUGIN_FEEDBACK_MODEL) if PLUGIN_FEEDBACK_MODEL else FeedbackFormBase):
     pass
