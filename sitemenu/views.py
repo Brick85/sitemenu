@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.core.urlresolvers import reverse
-from .sitemenu_settings import MENUCLASS
+from .sitemenu_settings import MENUCLASS, MENU_APPEND_SLASH
 from . import import_item
 
 Menu = import_item(MENUCLASS)
@@ -22,15 +22,19 @@ def dispatcher(request, url):
             menu = None
     else:
 
-        # if not url.endswith('/'):
-        #     return HttpResponsePermanentRedirect(reverse('dispatcher', kwargs={'url': url + '/'}))
+        if MENU_APPEND_SLASH and not url.endswith('/'):
+            return HttpResponsePermanentRedirect(reverse('dispatcher', kwargs={'url': url + '/'}))
+
         try:
             menu = Menu.objects.filter(full_url=url, enabled=True)[0]
         except:
             menu = None
 
         if not menu:
-            url_arr = url.split('/')[:-1]
+            url_arr = url.split('/')
+            if url_arr[-1] == '':
+                url_arr = url_arr[:-1]
+
             while url_arr:
                 try:
                     menu = Menu.objects.get(enabled=True, full_url='/'.join(url_arr) + '/')
