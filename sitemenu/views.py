@@ -24,6 +24,7 @@ def dispatcher(request, url):
 
         if MENU_APPEND_SLASH and not url.endswith('/'):
             return HttpResponsePermanentRedirect(reverse('dispatcher', kwargs={'url': url + '/'}))
+
         try:
             menu = Menu.objects.filter(full_url=url, enabled=True)[0]
         except:
