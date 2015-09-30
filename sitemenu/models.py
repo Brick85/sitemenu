@@ -180,7 +180,7 @@ class SiteMenu(models.Model):
                 aviable_pages.append(page[0])
             raise KeyError("Could not find page type '%s' in '%s'" % (self.page_type, ', '.join(aviable_pages)))
 
-        return import_item(use_page[2])(request, self, url_add)
+        return import_item(use_page[2])(request, menu=self, url_add=url_add)
 
     def get_absolute_url(self):
         if self.redirect_url:
