@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
+from django.utils.translation import get_language
 from . import import_item
 
 
@@ -195,8 +196,11 @@ class SiteMenu(models.Model):
         return reverse('dispatcher', kwargs={'url': self.full_url})
 
     def is_active(self, full_path):
-        if full_path == '/' and self.page_type == 'indx':
-            return True
+        if self.page_type == 'indx':
+            lang = get_language()
+            if full_path == '/' or full_path == '/%s/' % lang:
+                return True
+            return False
         return '/' + self.full_url in full_path
 
     def get_breadcrumbs(self):
