@@ -37,7 +37,11 @@
 
         textarea.hide();
 
-        var data = $.parseJSON(textarea.val());
+        var data = null;
+        if (textarea.val().length) {
+            data = $.parseJSON(textarea.val());
+        }
+
         if(data === null){
             data = {
                 width: 1,
