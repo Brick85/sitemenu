@@ -1,3 +1,4 @@
+(function($){
 $(function() {
 
     var level_size = 25;
@@ -94,4 +95,4 @@ $(function() {
             location.reload();
         });
     }
-});
+})})(django.jQuery);
