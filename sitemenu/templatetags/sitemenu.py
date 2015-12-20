@@ -145,7 +145,7 @@ def render_sitemenu(context, template='_menu', catalogue_root=None, flat=None, e
         nodes = nodes.filter(level__lt=root_level + levels)
     if exclude_index is not None:
         nodes = nodes.exclude(page_type='indx')
-    return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, request=context['request'])
+    return render_to_string('sitemenu/%s.html' % template, {'nodes': nodes}, context_instance=context)
 
 
 @register.simple_tag(takes_context=True)
@@ -163,7 +163,7 @@ def render_breadcrumbs(context, template='_breadcrumbs', add=None):
     except KeyError:
         return ''
     breadcrumbs = menu.get_breadcrumbs()
-    return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs, 'add': add}, request=context['request'])
+    return render_to_string('sitemenu/%s.html' % template, {'breadcrumbs': breadcrumbs, 'add': add}, context_instance=context)
 
 
 @register.simple_tag(takes_context=True)
@@ -175,7 +175,7 @@ def render_seometa(context, custom_menu=False):
             return ''
     else:
         menu = custom_menu
-    return render_to_string('sitemenu/_seometa.html', {'menu': menu}, request=context['request'])
+    return render_to_string('sitemenu/_seometa.html', {'menu': menu}, context_instance=context)
 
 
 @register.simple_tag(takes_context=True)
