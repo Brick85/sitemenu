@@ -46,3 +46,20 @@
 .tf_selected_table_type_2 .tf_first_column input {
     font-weight: bold;
 }
+
+.tf_actions a {
+    font-size: 12px;
+    color: #222;
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid #CCC;
+    background-color: #fafafa;
+    height: 17px;
+    width: 25px;
+    margin: 2px 5px 0 0;
+    text-align: center;
+}
+
+a.tf_action_remove {
+    color: red;
+}

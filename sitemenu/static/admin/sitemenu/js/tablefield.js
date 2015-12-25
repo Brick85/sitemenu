@@ -151,15 +151,80 @@
                     input.data('j', j);
                     td.append(input);
                 }
+
+                var td = $('<td></td>');
+                tr.append(td);
+                td.addClass('tf_actions');
+
+                actions = $('<a href="#" class="j_tf_action_up tf_action_up">&uarr;</a><a href="#" class="j_tf_action_down tf_action_down">&darr;</a>');
+                // <a href="#" class="j_tf_action_remove tf_action_remove">&times;</a>
+                td.append(actions);
+
             }
-            $('input.tf_table_input', table).change(set_value);
+
+            $('input.tf_table_input', table).change(function() {
+                set_value($(this));
+            });
+
             $('input.tf_table_input_hl', table).change(set_highlight);
 
             table_container.html(table);
+
+            $('.j_tf_action_up').click(tr_to_up);
+            $('.j_tf_action_down').click(tr_to_down);
         }
 
-        function set_value(){
-            var input = $(this);
+       function tr_to_up(event) {
+            current_tr = $(this).closest('tr');
+            prev_tr = current_tr.prev('tr');
+
+            if(prev_tr.length > 0) {
+                $('td input', current_tr).each(function( index, value ) {
+
+                  current_input = $(value);
+                  prev_input = $('td:eq('+index+') input', prev_tr);
+
+                  current_input_val = current_input.val();
+
+                  current_input.val(prev_input.val());
+                  prev_input.val(current_input_val);
+
+                  set_value(current_input);
+                  set_value(prev_input);
+
+                });
+            }
+            event.stopImmediatePropagation();
+            return false;
+        }
+
+        function tr_to_down(event) {
+            current_tr = $(this).closest('tr');
+            next_tr = current_tr.next('tr');
+
+
+            if(next_tr.length > 0) {
+                $('td input', current_tr).each(function( index, value ) {
+
+                  current_input = $(value);
+                  next_input = $('td:eq('+index+') input', next_tr);
+
+                  current_input_val = current_input.val();
+
+                  current_input.val(next_input.val());
+                  next_input.val(current_input_val);
+
+                  set_value(current_input);
+                  set_value(next_input);
+
+                });
+            }
+            event.stopImmediatePropagation();
+            return false;
+        }
+
+        function set_value(input){
+            // var input = $(this);
             var ii = parseInt(input.data('i'), 10);
             var ij = parseInt(input.data('j'), 10);
             if(!isNaN(ii) && !isNaN(ij)){
