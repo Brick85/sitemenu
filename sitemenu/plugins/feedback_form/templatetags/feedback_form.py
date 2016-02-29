@@ -18,5 +18,4 @@ def render_feedback_form(context):
     #user = request.user
 
     form = FeedbackFormForm(request)
-
-    return mark_safe("<div class='j_feedback_form_container'>" + render_to_string('sitemenu/plugins/feedback_form/feedback_form.html', {'form': form}, context_instance=context) + "</div>")
+    return mark_safe("<div class='j_feedback_form_container'>" + render_to_string('sitemenu/plugins/feedback_form/feedback_form.html', {'form': form}, request=request) + "</div>")
