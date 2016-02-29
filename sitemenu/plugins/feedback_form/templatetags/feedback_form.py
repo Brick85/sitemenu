@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 #from ..forms import FeedbackFormForm
 from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_FORM
 from sitemenu import import_item
@@ -18,4 +19,4 @@ def render_feedback_form(context):
 
     form = FeedbackFormForm(request)
 
-    return "<div class='j_feedback_form_container'>" + render_to_string('sitemenu/plugins/feedback_form/feedback_form.html', {'form': form}, context_instance=context) + "</div>"
+    return mark_safe("<div class='j_feedback_form_container'>" + render_to_string('sitemenu/plugins/feedback_form/feedback_form.html', {'form': form}, context_instance=context) + "</div>")
