@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
 from django.utils.translation import get_language
 from . import import_item
+from django.core.exceptions import ValidationError
 
 
 class SiteMenu(models.Model):
@@ -57,6 +58,11 @@ class SiteMenu(models.Model):
 
     def __unicode__(self):
         return "%s%s" % ("- " * self.level, self.title)
+
+    def clean(self):
+
+        if self == self.parent:
+            raise ValidationError({'parent': _('Page "Parent" can\'t be same as page')})
 
     def save(self, skip_tree_update=False, rebuild_sort=False, *args, **kwargs):
         if not skip_tree_update:
