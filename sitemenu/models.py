@@ -60,7 +60,6 @@ class SiteMenu(models.Model):
         return "%s%s" % ("- " * self.level, self.title)
 
     def clean(self):
-
         if self == self.parent:
             raise ValidationError({'parent': _('Page "Parent" can\'t be same as page')})
 
