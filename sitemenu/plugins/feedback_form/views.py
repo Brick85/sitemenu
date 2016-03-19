@@ -16,7 +16,7 @@ def save_feedback_form(request):
         if form.is_valid():
             form.save()
             if request.is_ajax():
-                return render_to_response('sitemenu/plugins/feedback_form/feedback_form_sent.html', {}, context_instance=RequestContext(request))
+                return render_to_response('sitemenu/plugins/feedback_form/feedback_form_sent.html', context_instance=RequestContext(request))
             else:
                 messages.add_message(request, messages.INFO, _('Feedback form sent.'))
                 return HttpResponseRedirect('/')
