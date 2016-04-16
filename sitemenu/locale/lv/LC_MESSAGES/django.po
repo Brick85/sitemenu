@@ -7,25 +7,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-02 00:45+0200\n"
-"PO-Revision-Date: 2014-11-02 00:47+0200\n"
+"POT-Creation-Date: 2016-04-17 01:12+0300\n"
+"PO-Revision-Date: 2016-04-17 01:24+0300\n"
 "Last-Translator: alexey <alexey@trialine.lv>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.8.6\n"
+"Language-Team: \n"
 
-#: admin.py:51 models.py:31
+#: admin.py:51 models.py:33
 msgid "title"
 msgstr "nosaukums"
 
 #: admin_views.py:21
 msgid "Unexpected error."
-msgstr ""
+msgstr "Kļūda"
 
 #: admin_views.py:35
 msgid "Wrong position."
@@ -37,7 +37,7 @@ msgstr ""
 
 #: admin_views.py:82
 msgid "Item moved."
-msgstr ""
+msgstr "Objekts pārvietots."
 
 #: mixins/video_mixin.py:16
 msgid "video ID"
@@ -49,79 +49,83 @@ msgid ""
 "com/ID)"
 msgstr ""
 
-#: models.py:16
+#: models.py:18
 msgid "sort"
-msgstr ""
+msgstr "pozicija"
 
-#: models.py:20
+#: models.py:22
 msgid "parent"
-msgstr ""
+msgstr "vecāks"
 
-#: models.py:25
+#: models.py:27
 msgid "date added"
-msgstr ""
+msgstr "pievienošanās datums"
 
-#: models.py:26
+#: models.py:28
 msgid "date modified"
-msgstr ""
+msgstr "modificēšanas datums"
 
-#: models.py:29
+#: models.py:31
 msgid "page type"
-msgstr ""
+msgstr "lapas veids"
 
-#: models.py:32
+#: models.py:34
 msgid "url"
 msgstr ""
 
-#: models.py:34
-msgid "h1 title"
-msgstr ""
-
-#: models.py:35
-msgid "page title"
-msgstr ""
-
 #: models.py:36
+msgid "h1 title"
+msgstr "H1 virsraksts"
+
+#: models.py:37
+msgid "page title"
+msgstr "Loga virsraksts"
+
+#: models.py:38
 msgid "seo keywords"
 msgstr ""
 
-#: models.py:37
+#: models.py:39
 msgid "seo description"
 msgstr ""
 
-#: models.py:39
-msgid "content"
-msgstr ""
-
 #: models.py:41
-msgid "redirect url"
-msgstr ""
+msgid "content"
+msgstr "saturs"
 
-#: models.py:42
-msgid "redirect to first child"
-msgstr ""
+#: models.py:43
+msgid "redirect url"
+msgstr "Pāradresācijas URL"
 
 #: models.py:44
+msgid "redirect to first child"
+msgstr "Pāradresēt uz pirmo"
+
+#: models.py:46
 msgid "enabled"
-msgstr ""
+msgstr "aktīvs"
 
-#: models.py:47
+#: models.py:49
 msgid "show in top menu"
-msgstr ""
+msgstr "Rādīt augšējā izvēlnē"
 
-#: models.py:48
+#: models.py:50
 msgid "show in bottom menu"
-msgstr ""
+msgstr "Rādīt apakšējā izvēlnē"
 
-#: models.py:51
+#: models.py:53
 msgid "menu"
-msgstr ""
+msgstr "lapa"
 
-#: models.py:52
+#: models.py:54
 msgid "menus"
-msgstr ""
+msgstr "lapas"
 
-#: models.py:139
+#: models.py:64
+msgid "Page \"Parent\" can't be same as page"
+msgstr "Lapas \"vecāks\" nevar rādīt uz sevi"
+
+#: models.py:145
 msgid "cache_tree_children was passed nodes in the wrong order!"
 msgstr ""
 
@@ -145,27 +149,27 @@ msgstr "datums"
 msgid "IP"
 msgstr ""
 
-#: plugins/feedback_form/models.py:28
+#: plugins/feedback_form/models.py:29
 msgid "user"
 msgstr ""
 
-#: plugins/feedback_form/models.py:29
+#: plugins/feedback_form/models.py:30
 msgid "first name"
 msgstr "vārds"
 
-#: plugins/feedback_form/models.py:30
+#: plugins/feedback_form/models.py:31
 msgid "email"
 msgstr "e-pasts"
 
-#: plugins/feedback_form/models.py:31
+#: plugins/feedback_form/models.py:32
 msgid "phone"
 msgstr "tālrunis"
 
-#: plugins/feedback_form/models.py:35
+#: plugins/feedback_form/models.py:36
 msgid "feedback form"
 msgstr "kontaktu forma"
 
-#: plugins/feedback_form/models.py:36
+#: plugins/feedback_form/models.py:37
 msgid "feedback forms"
 msgstr "kontaktu formas"
 
