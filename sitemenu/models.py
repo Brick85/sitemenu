@@ -88,7 +88,7 @@ class SiteMenu(models.Model):
                 try:
                     siblings = parent.get_childs(only_enabled=False)
                 except AttributeError:
-                    siblings = self._default_manager.filter(parent=None)
+                    siblings = self.__class__._default_manager.filter(parent=None)
                 try:
                     self.sort = siblings.aggregate(models.Max('sort'))['sort__max'] + 1
                 except TypeError:
@@ -126,7 +126,7 @@ class SiteMenu(models.Model):
         if only_enabled:
             cache_key += '_enabled'
         if not hasattr(self, cache_key):
-            childs = self._default_manager.filter(parent=self).order_by('sort')
+            childs = self.__class__._default_manager.filter(parent=self).order_by('sort')
             if only_enabled:
                 childs = childs.filter(enabled=True)
             setattr(self, cache_key, childs)
@@ -156,7 +156,7 @@ class SiteMenu(models.Model):
 
     def rebuild(self, rebuild_sort=False):
         tmp_sort = 1
-        for menu in self._default_manager.filter(parent=None):
+        for menu in self.__class__._default_manager.filter(parent=None):
             if rebuild_sort:
                 menu.sort = tmp_sort
                 tmp_sort += 1
@@ -164,7 +164,7 @@ class SiteMenu(models.Model):
 
     if SPLIT_TO_HEADER_AND_FOOTER:
         def rebuild_intop_and_inbottom_menu(self):
-            for menu in self._default_manager.filter(parent=None):
+            for menu in self.__class__._default_manager.filter(parent=None):
                 menu.apply_attr_to_all_childs('in_top_menu')
                 menu.apply_attr_to_all_childs('in_bottom_menu')
 
@@ -195,7 +195,7 @@ class SiteMenu(models.Model):
             else:
                 return self.redirect_url
         if self.redirect_to_first_child:
-            return self._default_manager.filter(parent=self)[0].get_absolute_url()
+            return self.__class__._default_manager.filter(parent=self)[0].get_absolute_url()
         if self.page_type == 'indx':
             return reverse('dispatcher', kwargs={'url': ''})
         return reverse('dispatcher', kwargs={'url': self.full_url})
@@ -209,7 +209,7 @@ class SiteMenu(models.Model):
         return '/' + self.full_url in full_path
 
     def get_breadcrumbs(self):
-        return self._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])
+        return self.__class__._default_manager.filter(pk__in=self.get_parents_ids_list() + [self.pk])
 
     def get_page_title(self):
         if self.page_type == 'indx':
