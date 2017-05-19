@@ -5,6 +5,7 @@ from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_
 from django.utils.translation import get_language
 from . import import_item
 from django.core.exceptions import ValidationError
+import itertools
 
 
 class SiteMenu(models.Model):
@@ -21,6 +22,7 @@ class SiteMenu(models.Model):
     has_childs = models.BooleanField(default=False, editable=False)
     parent     = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
     parents_list = models.CharField(max_length=MENU_MAX_LEVELS * 5, editable=False, null=True, blank=True)
+
 
     # Menu field
     full_url       = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
@@ -81,7 +83,7 @@ class SiteMenu(models.Model):
                 parent.parents_list = ''
                 self.parents_list = ''
 
-            self.full_url = "%s%s/" % (parent.full_url, self.url)
+            self.full_url = self.prepare_full_url(parent.full_url)
             self.level = parent.level + 1
 
             if not self.pk:
@@ -93,6 +95,13 @@ class SiteMenu(models.Model):
                     self.sort = siblings.aggregate(models.Max('sort'))['sort__max'] + 1
                 except TypeError:
                     self.sort = 0
+
+            self.temp_url = self.url
+            for x in itertools.count(1):
+                if not self.__class__.objects.filter(url=self.url).exclude(pk=self.pk).exists():
+                    break
+                self.url = "%s-%d" % (self.temp_url, x)
+            self.full_url = self.prepare_full_url(parent.full_url)
 
             self.sortorder = parent.sortorder + ('%' + '0%dd' % len(str(MENU_MAX_ITEMS))) % self.sort
 
@@ -226,6 +235,9 @@ class SiteMenu(models.Model):
         if hasattr(self, 'h1_title') and self.h1_title:
             return self.h1_title
         return self.title
+
+    def prepare_full_url(self, parent_url):
+        return "%s%s/" % (parent_url, self.url)
 
 if MENUCLASS == 'sitemenu.models.Menu':
     class Menu(SiteMenu):
