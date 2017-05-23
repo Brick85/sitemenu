@@ -69,9 +69,9 @@ class SiteMenu(models.Model):
             if self.get_parent():
                 parent = self.get_parent()
                 self.parents_list = ';'.join([str(v) for v in parent.get_parents_ids_list() + [parent.pk]])
-                # if not parent.has_childs:
-                #     parent.has_childs = True
-                #     parent.save(skip_tree_update=True)
+                if not parent.has_childs:
+                    parent.has_childs = True
+                    parent.save(skip_tree_update=True)
             else:
                 class Parent:
                     pass
