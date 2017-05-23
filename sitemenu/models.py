@@ -16,36 +16,36 @@ class SiteMenu(models.Model):
     TYPE_TYPES = [(x[0], x[1]) for x in PAGES]
 
     # Tree fields
-    sort       = models.IntegerField(_('sort'), default=0, editable=False)
-    sortorder  = models.CharField(max_length=MENU_MAX_LEVELS * len(str(MENU_MAX_ITEMS)), editable=False)
-    level      = models.PositiveSmallIntegerField(editable=False, default=0)
+    sort = models.IntegerField(_('sort'), default=0, editable=False)
+    sortorder = models.CharField(max_length=MENU_MAX_LEVELS * len(str(MENU_MAX_ITEMS)), editable=False)
+    level = models.PositiveSmallIntegerField(editable=False, default=0)
     has_childs = models.BooleanField(default=False, editable=False)
-    parent     = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
+    parent = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
     parents_list = models.CharField(max_length=MENU_MAX_LEVELS * 5, editable=False, null=True, blank=True)
 
 
     # Menu field
-    full_url       = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
-    date_added     = models.DateTimeField(_('date added'), auto_now_add=True)
-    date_modified  = models.DateTimeField(_('date modified'), auto_now=True)
+    full_url = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
+    date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+    date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
     # Misc fields
-    page_type               = models.CharField(_('page type'), max_length=4, choices=TYPE_TYPES, default=TYPE_TYPES[0][0])
+    page_type = models.CharField(_('page type'), max_length=4, choices=TYPE_TYPES, default=TYPE_TYPES[0][0])
 
-    title                   = models.CharField(_('title'), max_length=256)
-    url                     = models.SlugField(_('url'), max_length=32)
+    title = models.CharField(_('title'), max_length=256)
+    url = models.SlugField(_('url'), max_length=32)
 
-    h1_title                = models.CharField(_('h1 title'), max_length=256, blank=True)
-    page_title              = models.CharField(_('page title'), max_length=256, blank=True)
-    seo_keywords            = models.CharField(_('seo keywords'), max_length=256, blank=True)
-    seo_description         = models.CharField(_('seo description'), max_length=256, blank=True)
+    h1_title = models.CharField(_('h1 title'), max_length=256, blank=True)
+    page_title = models.CharField(_('page title'), max_length=256, blank=True)
+    seo_keywords = models.CharField(_('seo keywords'), max_length=256, blank=True)
+    seo_description = models.CharField(_('seo description'), max_length=256, blank=True)
 
-    content                 = models.TextField(_('content'), blank=True)
+    content = models.TextField(_('content'), blank=True)
 
-    redirect_url            = models.CharField(_('redirect url'), max_length=256, blank=True)
+    redirect_url = models.CharField(_('redirect url'), max_length=256, blank=True)
     redirect_to_first_child = models.BooleanField(_('redirect to first child'), default=None)
 
-    enabled                 = models.BooleanField(_('enabled'), default=None)
+    enabled = models.BooleanField(_('enabled'), default=None)
 
     if SPLIT_TO_HEADER_AND_FOOTER:
         in_top_menu = models.BooleanField(_('show in top menu'), default=False)
