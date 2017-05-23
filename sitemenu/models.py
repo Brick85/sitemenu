@@ -1,11 +1,11 @@
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
-from django.utils.translation import get_language
-from . import import_item
-from django.core.exceptions import ValidationError
 import itertools
+from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
+from django.utils.translation import get_language
+from django.utils.translation import ugettext_lazy as _
+from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
+from . import import_item
 
 
 class SiteMenu(models.Model):
@@ -22,7 +22,6 @@ class SiteMenu(models.Model):
     has_childs = models.BooleanField(default=False, editable=False)
     parent = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
     parents_list = models.CharField(max_length=MENU_MAX_LEVELS * 5, editable=False, null=True, blank=True)
-
 
     # Menu field
     full_url = models.CharField(max_length=255, null=True, blank=True, editable=False, unique=True)
