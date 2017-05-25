@@ -3,8 +3,21 @@ from django.conf import settings
 PAGES = getattr(settings, 'SITEMENU_PAGES', (
     ('text', 'Text page', 'sitemenu.views.render_menupage'),
     ('redr', 'Redirect page', 'sitemenu.views.render_redirectpage'),
-    ('indx', 'Index page', 'sitemenu.views.render_menupage'),
+    ('indx', 'Index page', 'sitemenu.views.render_menupage', True),
 ))
+
+PAGES_DICT = {}
+for x in PAGES:
+    unique = False
+    try:
+        unique = x[3]
+    except IndexError:
+        pass
+    PAGES_DICT[x[0]] = {
+        "page_name": x[1],
+        "page_view": x[2],
+        "unique": unique
+    }
 
 MENUCLASS = getattr(settings, 'SITEMENU_MENUCLASS', 'sitemenu.models.Menu')
 
