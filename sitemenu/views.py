@@ -1,17 +1,13 @@
 from django.shortcuts import render
-from django.template import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.core.urlresolvers import reverse
 from .sitemenu_settings import MENUCLASS, MENU_APPEND_SLASH
+from sitemenu.decorators import servercache
 from . import import_item
 
 Menu = import_item(MENUCLASS)
 
-#from sitemenu.decorators import profile
-from sitemenu.decorators import servercache
 
-
-#@profile('dispatcher.prof')
 @servercache()
 def dispatcher(request, url):
     url_add = []
@@ -52,7 +48,7 @@ def dispatcher(request, url):
     if menu.redirect_url:
         return HttpResponseRedirect(menu.redirect_url)
     if menu.redirect_to_first_child:
-        return HttpResponseRedirect(menu._default_manager.filter(parent=menu)[0].get_absolute_url())
+        return HttpResponseRedirect(menu.__class__._default_manager.filter(parent=menu)[0].get_absolute_url())
 
     return menu.render(request, list(reversed(url_add)))
 
@@ -61,9 +57,9 @@ def render_menupage(request, menu, url_add):
     if url_add:
         raise Http404
     return render(request, 'sitemenu/simplepage.html', {
-            'menu': menu,
-            'url_add': url_add,
-        })
+        'menu': menu,
+        'url_add': url_add,
+    })
 
 
 def render_redirectpage(request, menu, url_add):
