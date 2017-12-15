@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from models import FeedbackForm
+from .models import FeedbackForm
 #from django.utils.translation import ugettext_lazy as _
 
 
