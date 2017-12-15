@@ -1,5 +1,5 @@
 from django import forms
-from models import FeedbackForm
+from .models import FeedbackForm
 from django.utils.translation import ugettext_lazy as _
 from sitemenu.helpers import get_client_ip
 from django.core.mail import EmailMessage
