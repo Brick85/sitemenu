@@ -5,6 +5,9 @@ class ContextMixin(object):
         kwargs.update(self.get_context_dict())
         return super(ContextMixin, self).get_context_data(**kwargs)
 
+    def get_context_dict(self):
+        return {}
+
 class SitemenuViewMixin(object):
     def dispatch(self, request, menu, url_add):
         self.process_url_add(request, menu, url_add)
@@ -19,3 +22,5 @@ class SitemenuViewMixin(object):
         if len(url_add) > 0:
             raise Http404
 
+    def get_context_dict(self):
+        return {}

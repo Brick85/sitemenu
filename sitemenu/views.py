@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from .sitemenu_settings import MENUCLASS, MENU_APPEND_SLASH
 from sitemenu.decorators import servercache
 from . import import_item
