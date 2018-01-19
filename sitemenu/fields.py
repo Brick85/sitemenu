@@ -1,7 +1,7 @@
-from django.db import models
-from django import forms
-from django.utils.html import mark_safe
 import json
+from django import forms
+from django.db import models
+from django.utils.html import mark_safe
 
 
 class TableClass(object):
@@ -18,9 +18,6 @@ class TableClass(object):
             }
 
     def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
         return self.as_html()
 
     def as_string(self):
