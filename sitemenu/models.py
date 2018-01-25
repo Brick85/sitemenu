@@ -73,7 +73,7 @@ class SiteMenu(models.Model):
                     parent.has_childs = True
                     parent.save(skip_tree_update=True)
             else:
-                class Parent:
+                class Parent(object):
                     pass
                 parent = Parent()
                 parent.full_url = ''
@@ -134,7 +134,7 @@ class SiteMenu(models.Model):
         if only_enabled:
             cache_key += '_enabled'
         if not hasattr(self, cache_key):
-            childs = self.__class__._default_manager.filter(parent=self).order_by('sort')
+            childs = self.__class__._default_manager.filter(parent=self).exclude(parent=None).order_by('sort')
             if only_enabled:
                 childs = childs.filter(enabled=True)
             setattr(self, cache_key, childs)
