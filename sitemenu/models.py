@@ -20,7 +20,7 @@ class SiteMenu(models.Model):
     sortorder = models.CharField(max_length=MENU_MAX_LEVELS * len(str(MENU_MAX_ITEMS)), editable=False)
     level = models.PositiveSmallIntegerField(editable=False, default=0)
     has_childs = models.BooleanField(default=False, editable=False)
-    parent = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'))
+    parent = models.ForeignKey('self', null=True, blank=True, verbose_name=_('parent'), on_delete=models.CASCADE)
     parents_list = models.CharField(max_length=MENU_MAX_LEVELS * 5, editable=False, null=True, blank=True)
 
     # Menu field
@@ -57,7 +57,7 @@ class SiteMenu(models.Model):
         ordering = ('sortorder',)
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s%s" % ("- " * self.level, self.title)
 
     def clean(self):
@@ -73,7 +73,7 @@ class SiteMenu(models.Model):
                     parent.has_childs = True
                     parent.save(skip_tree_update=True)
             else:
-                class Parent:
+                class Parent(object):
                     pass
                 parent = Parent()
                 parent.full_url = ''
@@ -134,7 +134,7 @@ class SiteMenu(models.Model):
         if only_enabled:
             cache_key += '_enabled'
         if not hasattr(self, cache_key):
-            childs = self.__class__._default_manager.filter(parent=self).order_by('sort')
+            childs = self.__class__._default_manager.filter(parent=self).exclude(parent=None).order_by('sort')
             if only_enabled:
                 childs = childs.filter(enabled=True)
             setattr(self, cache_key, childs)
