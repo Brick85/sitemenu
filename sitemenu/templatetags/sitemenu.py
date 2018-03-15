@@ -11,7 +11,7 @@ from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
-#from django.core.cache import cache
+from django.core.urlresolvers import translate_url
 
 
 if SPLIT_TO_HEADER_AND_FOOTER:
@@ -188,10 +188,12 @@ def get_languages_menu(context):
         langs.append({
             'name': ln[1],
             'code': ln[0],
-            'link': path.replace('/%s/' % current_ln, '/%s/' % ln[0]),
+            'link': translate_url(path, ln[0]),
             'active': True if current_ln == ln[0] else False
         })
+
     return render_to_string('sitemenu/_languages.html', {'langs': langs,})
+
 
 
 @register.tag
