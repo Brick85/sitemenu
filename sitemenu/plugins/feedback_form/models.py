@@ -13,7 +13,7 @@ class FeedbackFormAbstract(models.Model):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_message()
 
     def get_message(self):
@@ -26,7 +26,7 @@ class FeedbackFormBase(FeedbackFormAbstract):
     FIELDS_FOR_AUTHENICATED_USER = ['message']
     FIELDS_FOR_NON_AUTHENICATED_USER = ['user_name', 'user_email', 'user_phone', 'message']
     REQUIRED_FIELDS = ['user_name', ('user_email', 'user_phone'), 'message']
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("user"), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("user"), blank=True, null=True, on_delete=models.CASCADE)
     user_name = models.CharField(_('first name'), max_length=64, blank=True, null=True)
     user_email = models.EmailField(_('email'), blank=True, null=True)
     user_phone = models.CharField(_('phone'), max_length=64, blank=True, null=True)
@@ -36,7 +36,7 @@ class FeedbackFormBase(FeedbackFormAbstract):
         verbose_name = _('feedback form')
         verbose_name_plural = _('feedback forms')
 
-    def __unicode__(self):
+    def __str__(self):
         if self.user:
             return self.user.get_username()
         else:
