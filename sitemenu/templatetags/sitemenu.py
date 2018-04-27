@@ -11,7 +11,7 @@ from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
-from django.core.urlresolvers import translate_url
+from django.urls import translate_url
 
 
 if SPLIT_TO_HEADER_AND_FOOTER:
