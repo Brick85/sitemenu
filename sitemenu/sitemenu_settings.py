@@ -6,19 +6,6 @@ PAGES = getattr(settings, 'SITEMENU_PAGES', (
     ('indx', 'Index page', 'sitemenu.views.render_menupage', True),
 ))
 
-PAGES_DICT = {}
-for x in PAGES:
-    unique = False
-    try:
-        unique = x[3]
-    except IndexError:
-        pass
-    PAGES_DICT[x[0]] = {
-        "page_name": x[1],
-        "page_view": x[2],
-        "unique": unique
-    }
-
 MENUCLASS = getattr(settings, 'SITEMENU_MENUCLASS', 'sitemenu.models.Menu')
 
 
@@ -45,7 +32,7 @@ SERVER_CACHE_DIR = getattr(settings, 'SITEMENU_SERVER_CACHE_DIR', None)
 SERVER_CACHE_ARGS_FUNC = getattr(settings, 'SITEMENU_SERVER_CACHE_ARGS_FUNC', None)
 
 # Languages
-LANGUAGES = getattr(settings, 'LANGUAGES', (('en','en'),))
+LANGUAGES = getattr(settings, 'LANGUAGES', (('en', 'en'),))
 
 # You need to invalidate cache!
 # basic method:
