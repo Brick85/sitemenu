@@ -1,11 +1,12 @@
 from django import forms
-from .models import FeedbackForm
 from django.utils.translation import ugettext_lazy as _
-from sitemenu.helpers import get_client_ip
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
+from sitemenu.helpers import get_client_ip
 from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD
+
+from .models import FeedbackForm
 
 
 class FeedbackFormForm(forms.ModelForm):
@@ -34,7 +35,7 @@ class FeedbackFormForm(forms.ModelForm):
         return f
 
     def __delete_fields__(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             fields_to_use = FeedbackForm.FIELDS_FOR_AUTHENICATED_USER
         else:
             fields_to_use = FeedbackForm.FIELDS_FOR_NON_AUTHENICATED_USER
@@ -60,7 +61,6 @@ class FeedbackFormForm(forms.ModelForm):
     def clean(self):
         cd = self.cleaned_data
 
-
         if PLUGIN_FEEDBACK_ENABLE_SPAM_FIELD:
             if 'surname' in cd and cd['surname']:
                 raise forms.ValidationError("Spam message!")
@@ -76,7 +76,7 @@ class FeedbackFormForm(forms.ModelForm):
             else:
                 if field not in self.fields:
                     continue
-                if not field in cd or not cd[field]:
+                if field not in cd or not cd[field]:
                     self._errors[field] = self.error_class([FeedbackFormForm.error_messages['required_field']])
                     if field in cd:
                         del cd[field]
@@ -90,7 +90,6 @@ class FeedbackFormForm(forms.ModelForm):
         if self.request.user.is_authenticated():
             obj.user = self.request.user
         obj.save()
-
 
         body = render_to_string("sitemenu/plugins/feedback_form/mail_body.html", {'obj': obj})
         subject = render_to_string("sitemenu/plugins/feedback_form/mail_subject.txt", {'obj': obj}).strip()
