@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from .sitemenu_settings import MENUCLASS
 from django.conf import settings
+from .admin_forms import SiteMenuForm
 
 if 'modeltranslation' in settings.INSTALLED_APPS:
     from modeltranslation.admin import TranslationAdmin
@@ -24,8 +25,8 @@ class SiteMenuAdmin(ParentModel):
     prepopulated_fields = {"url": ("title",)}
     list_display = ('title', 'enabled')
     formfield_overrides = sitemenu_formfield_overrides
-
     change_list_template = 'admin/sitemenu/sitemenu_change_list.html'
+    form = SiteMenuForm
 
     class Media:
         css = {
