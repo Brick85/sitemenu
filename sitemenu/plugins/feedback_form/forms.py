@@ -34,7 +34,7 @@ class FeedbackFormForm(forms.ModelForm):
         return f
 
     def __delete_fields__(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             fields_to_use = FeedbackForm.FIELDS_FOR_AUTHENICATED_USER
         else:
             fields_to_use = FeedbackForm.FIELDS_FOR_NON_AUTHENICATED_USER
@@ -87,7 +87,7 @@ class FeedbackFormForm(forms.ModelForm):
         kwargs['commit'] = False
         obj = super(FeedbackFormForm, self).save(*args, **kwargs)
         obj.ip_address = get_client_ip(self.request)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             obj.user = self.request.user
         obj.save()
 
