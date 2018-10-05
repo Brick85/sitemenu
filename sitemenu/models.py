@@ -97,7 +97,9 @@ class SiteMenu(models.Model):
 
             self.temp_url = self.url
             for x in itertools.count(1):
-                if not self.__class__.objects.filter(url=self.url).exclude(pk=self.pk).exists():
+                if not self.__class__.objects.filter(
+                    full_url=self.prepare_full_url(parent.full_url)
+                ).exclude(pk=self.pk).exists():
                     break
                 self.url = "%s-%d" % (self.temp_url, x)
             self.full_url = self.prepare_full_url(parent.full_url)
