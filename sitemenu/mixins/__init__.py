@@ -1,1 +1,1 @@
-from video_mixin import VideoMixin
+from .video_mixin import VideoMixin
