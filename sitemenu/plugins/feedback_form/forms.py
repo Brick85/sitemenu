@@ -53,7 +53,6 @@ class FeedbackFormForm(forms.ModelForm):
         for field in fields_to_del:
             del self.fields[field]
 
-        self.fields.keyOrder = fields
 
     def custom_init(self, request):
         pass
