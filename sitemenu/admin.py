@@ -36,8 +36,20 @@ class SiteMenuAdmin(ParentModel):
 
     class Media:
         css = {
-            'screen': ('/static/admin/sitemenu/css/no-theme/jquery-ui.min.css', '/static/admin/sitemenu/css/sitemenu.css',),
+            'screen': (
+                'admin/sitemenu/css/no-theme/jquery-ui.min.css',
+                'admin/sitemenu/css/sitemenu.css',
+                'admin/sitemenu/css/images.css',
+            ),
         }
+
+        # ordering is important !!! and first file (sitemenu.js) ends })})(jQuery);
+        # all other files ends with })(django.jQuery);
+        js = (
+            'admin/sitemenu/js/sitemenu.js',
+            'admin/sitemenu/js/images.js',
+            'admin/sitemenu/js/jquery-ui.min.js',
+        )
 
     def __init__(self, *args, **kwargs):
         super(SiteMenuAdmin, self).__init__(*args, **kwargs)
