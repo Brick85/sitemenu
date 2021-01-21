@@ -1,4 +1,5 @@
 from django.contrib.sitemaps import Sitemap
+from django.core.urlresolvers import reverse
 from sitemenu.sitemenu_settings import MENUCLASS
 from sitemenu import import_item
 
@@ -15,4 +16,6 @@ class SiteMenuSitemap(Sitemap):
         return obj.date_modified
 
     def location(self, obj):
+        if obj.page_type == 'redr':
+            return reverse('dispatcher', kwargs={'url': obj.full_url})
         return obj.get_absolute_url()
