@@ -65,7 +65,6 @@ class TableClass(object):
 
 
 class TableField(models.TextField):
-    __metaclass__ = models.SubfieldBase
 
     def formfield(self, **kwargs):
         kwargs['widget'] = TableWidget(attrs={'class': 'j_tablefield'})
@@ -91,7 +90,7 @@ class TableWidget(forms.Textarea):
         }
         js = ('admin/sitemenu/js/tablefield.js',)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if isinstance(value, TableClass):
             value = value.as_string()
-        return super(TableWidget, self).render(name, value, attrs)
+        return super(TableWidget, self).render(name, value, attrs, renderer)
