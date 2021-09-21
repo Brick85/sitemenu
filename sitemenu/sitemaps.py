@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from sitemenu.sitemenu_settings import MENUCLASS
 from sitemenu import import_item
 
