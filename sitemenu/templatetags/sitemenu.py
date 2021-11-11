@@ -1,13 +1,14 @@
+import re
+
 from django import template
-from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
-from django.template import RequestContext
-from django.template.loader import get_template
-import re
+from django.template.loader import render_to_string
+
 from .. import import_item
-from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, LANGUAGES, DIGG_PAGINATOR_SHOW_PAGES
+from ..sitemenu_settings import MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_LANGUAGES, DIGG_PAGINATOR_SHOW_PAGES
+
 Menu = import_item(MENUCLASS)
 
 register = template.Library()
@@ -184,16 +185,15 @@ def get_languages_menu(context):
     current_ln = get_language()
     langs = []
 
-    for ln in LANGUAGES:
+    for code, name in MENU_LANGUAGES:
         langs.append({
-            'name': ln[1],
-            'code': ln[0],
-            'link': translate_url(path, ln[0]),
-            'active': True if current_ln == ln[0] else False
+            'name': name,
+            'code': code,
+            'link': translate_url(path, code),
+            'active': current_ln == code
         })
 
-    return render_to_string('sitemenu/_languages.html', {'langs': langs,})
-
+    return render_to_string('sitemenu/_languages.html', {'langs': langs})
 
 
 @register.tag

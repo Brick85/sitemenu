@@ -34,6 +34,9 @@ SERVER_CACHE_ARGS_FUNC = getattr(settings, 'SITEMENU_SERVER_CACHE_ARGS_FUNC', No
 # Languages
 LANGUAGES = getattr(settings, 'LANGUAGES', (('en', 'en'),))
 
+# Sometimes we must hide some languages from menu (ex. multi country sites with single db)
+MENU_LANGUAGES = getattr(settings, 'SITEMENU_MENU_LANGUAGES', LANGUAGES)
+
 # You need to invalidate cache!
 # basic method:
 
