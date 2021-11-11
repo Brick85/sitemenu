@@ -240,6 +240,7 @@ class SiteMenu(models.Model):
     def prepare_full_url(self, parent_url):
         return "%s%s/" % (parent_url, self.url)
 
+
 if MENUCLASS == 'sitemenu.models.Menu':
     class Menu(SiteMenu):
         pass

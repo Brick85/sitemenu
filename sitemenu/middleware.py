@@ -1,12 +1,12 @@
 #from django.conf import settings
-from sitemenu.sitemenu_settings import SERVER_CACHE_DIR, SERVER_CACHE_ARGS_FUNC
-from sitemenu import import_item
 import os
-#import hashlib
 
 from django.conf import settings
 from django.utils import translation
 from django.urls import reverse
+
+from sitemenu.sitemenu_settings import SERVER_CACHE_DIR, SERVER_CACHE_ARGS_FUNC, ADMIN_SITE_PATTERN_URL
+from sitemenu import import_item
 
 
 class ForceAdminLanguageMiddleware(object):
@@ -14,7 +14,8 @@ class ForceAdminLanguageMiddleware(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path.startswith(reverse('admin:index')):
+        pattern = ADMIN_SITE_PATTERN_URL or reverse('admin:index')
+        if request.path.startswith(pattern):
             request.LANGUAGE_CODE = getattr(settings, 'ADMIN_LANGUAGE_CODE', settings.LANGUAGE_CODE)
             translation.activate(request.LANGUAGE_CODE)
             request.LANG = request.LANGUAGE_CODE

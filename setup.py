@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='django-sitemenu',
-      version='0.1.5',
+      version='0.1.6',
       description='Nested menu for django projects.',
       long_description='Nested menu for django projects. Without MPTT and with drag\'n\'drop sorting.'
                        'Easy customizable. Looks like simple model for using.',
@@ -12,7 +12,7 @@ setup(name='django-sitemenu',
       url='https://github.com/Brick85/sitemenu/',
       include_package_data=True,
       zip_safe=False,
-      requires=['django(>=1.3)'],
+      requires=['django(>=2.3)'],
       classifiers=['Development Status :: 5 - Production/Stable',
                    'Environment :: Web Environment',
                    'Framework :: Django',
@@ -20,6 +20,6 @@ setup(name='django-sitemenu',
                    'License :: OSI Approved :: BSD License',
                    'Natural Language :: English',
                    'Operating System :: Unix',
-                   'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.6',
                    'Topic :: Utilities'],
       license='New BSD')

@@ -37,6 +37,10 @@ LANGUAGES = getattr(settings, 'LANGUAGES', (('en', 'en'),))
 # Sometimes we must hide some languages from menu (ex. multi country sites with single db)
 MENU_LANGUAGES = getattr(settings, 'SITEMENU_MENU_LANGUAGES', LANGUAGES)
 
+# When ForceAdminLanguageMiddleware enabled startswith checked by reverse('admin:index')
+# On multiple admin site this doesn't work, we have to add custom pattern
+ADMIN_SITE_PATTERN_URL = getattr(settings, 'SITEMENU_ADMIN_SITE_PATTERN_URL', None)
+
 # You need to invalidate cache!
 # basic method:
 
