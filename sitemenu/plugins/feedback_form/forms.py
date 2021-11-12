@@ -83,16 +83,21 @@ class FeedbackFormForm(forms.ModelForm):
 
         return cd
 
-    def save(self, *args, **kwargs):
-        kwargs['commit'] = False
-        obj = super(FeedbackFormForm, self).save(*args, **kwargs)
-        obj.ip_address = get_client_ip(self.request)
-        if self.request.user.is_authenticated:
-            obj.user = self.request.user
-        obj.save()
+    def save(self, commit=True):
+        """
+        Saving obj to self is required for later using in the send_email as obj to send :(
+        """
+        self.obj = super(FeedbackFormForm, self).save(False)
+        self.obj.ip_address = get_client_ip(self.request)
 
-        body = render_to_string("sitemenu/plugins/feedback_form/mail_body.html", {'obj': obj})
-        subject = render_to_string("sitemenu/plugins/feedback_form/mail_subject.txt", {'obj': obj}).strip()
-        email = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [mail for name, mail in settings.MANAGERS])
+        if self.request.user.is_authenticated:
+            self.obj.user = self.request.user
+        self.obj.save()
+        return self.obj
+
+    def send_email(self):
+        body = render_to_string("sitemenu/plugins/feedback_form/mail_body.html", {'obj': self.obj})
+        subject = render_to_string("sitemenu/plugins/feedback_form/mail_subject.txt", {'obj': self.obj}).strip()
+        email = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [mail for _, mail in settings.MANAGERS])
         email.content_subtype = "html"
         email.send()

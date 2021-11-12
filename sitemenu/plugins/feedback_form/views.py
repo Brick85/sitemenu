@@ -11,8 +11,11 @@ FeedbackFormForm = import_item(PLUGIN_FEEDBACK_FORM)
 def save_feedback_form(request):
     if request.method == "POST" and "feedbackformsubmit" in request.POST:
         form = FeedbackFormForm(data=request.POST, request=request)
+
         if form.is_valid():
             form.save()
+            form.send_email()
+
             if request.is_ajax():
                 return render(request, 'sitemenu/plugins/feedback_form/feedback_form_sent.html')
             else:
