@@ -1,5 +1,7 @@
 import importlib
 
+default_app_config = 'sitemenu.apps.SitemenuConfig'
+
 
 def import_item(path):
     try:
@@ -10,6 +12,6 @@ def import_item(path):
         raise ImportError("Could not import function '%s': %s" % (path, e))
     try:
         func = getattr(render_module, render_function)
-    except AttributeError as e:
+    except AttributeError:
         raise AttributeError("Could not find function '%s' in %s" % (render_function, render_module))
     return func
