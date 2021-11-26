@@ -1,0 +1,1 @@
+default_app_config = 'sitemenu.plugins.feedback_form.apps.FeedbbackFormConfig'
