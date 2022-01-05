@@ -66,6 +66,7 @@ class TableClass(object):
 
 class TableField(models.TextField):
 
+
     def formfield(self, **kwargs):
         kwargs['widget'] = TableWidget(attrs={'class': 'j_tablefield'})
         return super(TableField, self).formfield(**kwargs)
@@ -74,6 +75,11 @@ class TableField(models.TextField):
         if isinstance(value, TableClass):
             return value
         return TableClass(value)
+
+    def from_db_value(self, value, expression, connection):
+        if value:
+            return TableClass(value)
+        return value
 
     def get_db_prep_value(self, value, connection, prepared=False):
         if not value:
