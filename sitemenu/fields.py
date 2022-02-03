@@ -39,7 +39,7 @@ class TableClass(object):
         for i, row in enumerate(self.data['rows']):
             if i == 0 and self.data['table_type'] == 1:
                 continue
-            if row['highlight']:
+            if row.get('highlight', None):
                 html += '<tr class="highlight">'
             else:
                 html += '<tr>'
