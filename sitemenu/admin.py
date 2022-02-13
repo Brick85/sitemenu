@@ -4,6 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 from .sitemenu_settings import MENUCLASS
 from django.conf import settings
 from .admin_forms import SiteMenuForm
+from .admin_views import save_menu_position
+from django.urls import path
+
+
 
 if 'modeltranslation' in settings.INSTALLED_APPS:
     from modeltranslation.admin import TranslationAdmin
@@ -69,6 +73,14 @@ class SiteMenuAdmin(ParentModel):
         return mark_safe('%s%s<div class="drag_handle_container"><div class="drag_handle"></div></div>' % (span, title))
     indented_short_title.short_description = _('title')
     indented_short_title.allow_tags = True
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('reorder-menu-position/', self.admin_site.admin_view(save_menu_position), name='reorder-menu-position')
+        ]
+
+        return custom_urls + urls
 
 
 if MENUCLASS == 'sitemenu.models.Menu':

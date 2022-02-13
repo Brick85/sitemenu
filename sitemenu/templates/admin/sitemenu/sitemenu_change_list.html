@@ -4,6 +4,6 @@
 {% block extrahead %}
 {{ block.super }}
 <script type="text/javascript">
-    var save_url = '{% url 'save_menu_position' %}';
+    var save_url = '{% url "admin:reorder-menu-position" %}';
 </script>
 {% endblock %}
