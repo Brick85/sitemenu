@@ -3,7 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.translation import get_language
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from .sitemenu_settings import PAGES as PAGES_TYPES, MENUCLASS, SPLIT_TO_HEADER_AND_FOOTER, MENU_MAX_LEVELS, MENU_MAX_ITEMS
 from . import import_item
 

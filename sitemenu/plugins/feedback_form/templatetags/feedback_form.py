@@ -6,7 +6,7 @@ from sitemenu import import_item
 FeedbackFormForm = import_item(PLUGIN_FEEDBACK_FORM)
 
 #from django.contrib import messages
-#from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 register = template.Library()
 

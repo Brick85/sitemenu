@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import render
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from sitemenu.sitemenu_settings import PLUGIN_FEEDBACK_FORM
 from sitemenu import import_item
 

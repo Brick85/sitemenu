@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='django-sitemenu',
-      version='0.1.3',
+      version='0.2.0',
       description='Nested menu for django projects.',
       long_description='Nested menu for django projects. Without MPTT and with drag\'n\'drop sorting.'
                        'Easy customizable. Looks like simple model for using.',
