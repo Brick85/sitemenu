@@ -16,7 +16,7 @@ def save_feedback_form(request):
             form.save()
             form.send_email()
 
-            if request.is_ajax():
+            if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
                 return render(request, 'sitemenu/plugins/feedback_form/feedback_form_sent.html')
             else:
                 messages.add_message(request, messages.INFO, _('Feedback form sent.'))
